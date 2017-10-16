@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/setting_title_browser">
+        <ListPreference android:key="@string/sp_volume"
+			android:defaultValue="1"
+			android:title="@string/setting_title_volume_control"
+			android:summary="@string/setting_summary_vc_switch_tabs"
+			android:entries="@array/setting_entries_volume_control"
+			android:entryValues="@array/setting_values_volume_control"/>
+		<SwitchPreference android:key="@string/sp_images"
+			android:defaultValue="true"
+			android:title="@string/setting_title_images"
+			android:summary="@string/setting_summary_images"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
+

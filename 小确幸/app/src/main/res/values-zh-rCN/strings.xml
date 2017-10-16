@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">小确幸</string>
+	
+	<!--Toast-->
+	<string name="toast_successful">成功</string>
+	<string name="toast_failed">失败</string>
+	<string name="toast_intent_failed">启动失败</string>
+	<string name="toast_start_download">开始下载</string>
+	<string name="toast_copy_link_successfully">已复制链接</string>
+	<string name="toast_copy_link_failed">复制失败</string>
+	<string name="toast_open_file_manager_failed">打开文件管理器失败</string>
+	
+	<!--Dialog-->
+	
+    <string name="dialog_title_warning">警告</string>
+	<string name="dialog_content_ssl_error">当前站点的证书是不可信任的，需要继续浏览吗？</string>
+	
+	<string name="dialog_title_resubmission">重新提交</string>
+    <string name="dialog_content_resubmission">你想要重新提交你的数据吗？</string>
+	
+	<string name="dialog_title_sign_in">登入</string>
+	<string name="dialog_sign_in_username">用户名</string>
+    <string name="dialog_sign_in_password">密码</string>
+	
+	<string name="dialog_longpress_copy_link">复制链接</string>
+	<string name="dialog_longpress_save_img">保存图片</string>
+	<string name="dialog_longpress_page_details">页面详情</string>
+	<string name="dialog_longpress_new_tab">新标签页打开</string>
+	
+	<string name="dialog_title_page_details">页面详情</string>
+	<string name="dialog_content_page_title">页面标题：</string>
+	<string name="dialog_content_page_link">页面链接：</string>
+	<string name="dialog_content_page_select_link">选中链接：</string>
+	
+    <!-- Browser setting -->
+    <string name="setting_title_browser">浏览设置</string>
+	<!-- Volume key scroll -->
+    <string name="setting_title_volume_control">音量键控制</string>
+    <string name="setting_summary_vc_switch_tabs">切换标签页</string>
+    <string name="setting_summary_vc_scroll_webpage">滚动网页</string>
+    <string name="setting_summary_vc_system_default">系统默认</string>
+	<!-- Images -->
+    <string name="setting_title_images">图片</string>
+    <string name="setting_summary_images">允许网页加载图片</string>
+	
+</resources>
+
+

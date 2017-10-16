@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	
+    <!-- Volume control -->
+    <string-array name="setting_entries_volume_control">
+        <item>@string/setting_summary_vc_switch_tabs</item>
+        <item>@string/setting_summary_vc_scroll_webpage</item>
+        <item>@string/setting_summary_vc_system_default</item>
+    </string-array>
+    <string-array name="setting_values_volume_control">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+	
+</resources>

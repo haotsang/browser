@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	
+    <string name="sp_volume">
+        SP_VOLUME_9
+    </string>
+	
+	<string name="sp_images">
+        SP_IMAGES_9
+    </string>
+	
+</resources>
