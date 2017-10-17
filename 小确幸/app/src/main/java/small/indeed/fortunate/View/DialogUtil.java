@@ -78,7 +78,7 @@ public class DialogUtil
 	
     public void showDialog() {
 		alertDialog.getWindow().setGravity(Gravity.CENTER | Gravity.TOP);
-		//alertDialog.getWindow().setWindowAnimations(R.style.dialogAnimation);
+		alertDialog.getWindow().setWindowAnimations(R.style.dialogAnimation);
         alertDialog.show();
     }
     

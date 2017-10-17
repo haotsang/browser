@@ -262,6 +262,7 @@ public class BrowserActivity extends Activity
 					@Override
 					public void onReceivedTitle(WebView view, String title) {
 						super.onReceivedTitle(view, title);
+						//ToastUtil.show(BrowserActivity.this, title.toString().length() == 0 ? view.getUrl() : title);
 					}
 					@Override
 					public void onReceivedIcon(WebView view, Bitmap icon) {
@@ -388,30 +389,41 @@ public class BrowserActivity extends Activity
 			fastView.setDownloadListener(new DownloadListener() {
 					@Override
 					public void onDownloadStart(final String url, String userAgent, final String contentDisposition, final String mimeType, long contentLength) {
-						ArrayList<String> list = new ArrayList<String>();
-						list.add(0, "调用系统下载");
-						if (BrowserUnit.hasApp(BrowserActivity.this, "com.dv.adm.pay")) {
-							list.add(1, "调用ADM下载");
+						SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BrowserActivity.this);
+						if (sp.getBoolean(getString(R.string.sp_download), true)) {
+							BrowserUnit.downloadByADM(BrowserActivity.this, url, mimeType);
 						} else {
-							list.add(1, "调用ADM下载(需要下载)");
-						}
-						AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-						builder.setItems(list.toArray(new String[list.size()]), new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									switch (which) {
-										case 0:
-											BrowserUnit.download(BrowserActivity.this, url, contentDisposition, mimeType);
-											break;
-										case 1:
-											BrowserUnit.downloadByADM(BrowserActivity.this, url, mimeType);
-											break;
-										default:
-											break;
+							new AlertDialog.Builder(BrowserActivity.this).setMessage("确定下载？").setCancelable(false).setNegativeButton(android.R.string.cancel, null).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										BrowserUnit.download(BrowserActivity.this, url, contentDisposition, mimeType);
 									}
-								}
-							});
-						builder.show();
+								}).show();
+						}
+//						ArrayList<String> list = new ArrayList<String>();
+//						list.add(0, "调用系统下载");
+//						if (BrowserUnit.hasApp(BrowserActivity.this, "com.dv.adm.pay")) {
+//							list.add(1, "调用ADM下载");
+//						} else {
+//							list.add(1, "调用ADM下载(需要下载)");
+//						}
+//						AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
+//						builder.setItems(list.toArray(new String[list.size()]), new DialogInterface.OnClickListener() {
+//								@Override
+//								public void onClick(DialogInterface dialog, int which) {
+//									switch (which) {
+//										case 0:
+//											BrowserUnit.download(BrowserActivity.this, url, contentDisposition, mimeType);
+//											break;
+//										case 1:
+//											BrowserUnit.downloadByADM(BrowserActivity.this, url, mimeType);
+//											break;
+//										default:
+//											break;
+//									}
+//								}
+//							});
+//						builder.show();
 					}
 				});
 
@@ -437,7 +449,17 @@ public class BrowserActivity extends Activity
 									if (s.equals(getString(R.string.dialog_longpress_copy_link))) {
 										BrowserUnit.copyURL(BrowserActivity.this, target);
 									} else if (s.equals(getString(R.string.dialog_longpress_save_img))) {
+										SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BrowserActivity.this);
+										if (sp.getBoolean(getString(R.string.sp_download), true)) {
 											BrowserUnit.downloadByADM(BrowserActivity.this, target, BrowserUnit.MIME_TYPE_IMAGE);
+										} else {
+											new AlertDialog.Builder(BrowserActivity.this).setMessage("确定下载？").setCancelable(false).setNegativeButton(android.R.string.cancel, null).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+													@Override
+													public void onClick(DialogInterface dialog, int which) {
+														BrowserUnit.download(BrowserActivity.this, target, target, BrowserUnit.MIME_TYPE_IMAGE);
+													}
+												}).show();
+										}
 									} else if (s.equals(getString(R.string.dialog_title_page_details))) {
 										AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
 										builder.setTitle(getString(R.string.dialog_longpress_page_details));
@@ -504,12 +526,13 @@ public class BrowserActivity extends Activity
 		list.add(1, "下载管理");
 		list.add(2, "分享");
 		list.add(3, "发至桌面");
+		list.add(4, "在网页上查找");
 		if (fastView.getSettings().getUserAgentString().equals(BrowserUnit.UA_DESKTOP)) {
-			list.add(4, "切换手机版网页");
+			list.add(5, "切换手机版网页");
 		} else {
-			list.add(4, "切换电脑版网页");
+			list.add(5, "切换电脑版网页");
 		}
-		list.add(5, "浏览设置");
+		list.add(6, "浏览设置");
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
 		builder.setItems(list.toArray(new String[list.size()]), new DialogInterface.OnClickListener() {
@@ -561,6 +584,42 @@ public class BrowserActivity extends Activity
 							}
 							break;
 						case 4:
+							new DialogUtil(BrowserActivity.this, new DialogUtil.SureInterfance() {
+									@Override
+									public void sureTodo(final String query) {
+										/**/
+										final RelativeLayout searchPanel = (RelativeLayout) findViewById(R.id.main_search_panel);
+										final Button searchUp = (Button) findViewById(R.id.main_search_up);
+										final Button searchDown = (Button) findViewById(R.id.main_search_down);
+										final Button searchCancel = (Button) findViewById(R.id.main_search_cancel);
+
+										searchPanel.setVisibility(View.VISIBLE);
+										fastView.findAllAsync(query);
+
+										searchUp.setOnClickListener(new View.OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													fastView.findNext(false);
+												}
+											});
+										searchDown.setOnClickListener(new View.OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													fastView.findNext(true);
+												}
+											});
+										searchCancel.setOnClickListener(new View.OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													fastView.clearMatches();
+													searchPanel.setVisibility(View.GONE);
+												}
+											});
+										/**/
+									}
+								}, null).showDialog();
+							break;
+						case 5:
 							if (fastView.getSettings().getUserAgentString().equals(BrowserUnit.UA_DESKTOP)) {
 								fastView.getSettings().setUserAgentString(null);
 								fastView.reload();
@@ -569,13 +628,12 @@ public class BrowserActivity extends Activity
 								fastView.reload();
 							}
 							break;
-						case 5:
-							showBookmark();
+						case 6:
 							//Intent i = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS", Uri.parse("package:" + getPackageName()));
 							//i.setComponent(new ComponentName("com.android.settings", "com.android.settings.applications.InstalledAppDetails"));
 							//startActivity(i);
-							//Intent intent = new Intent(BrowserActivity.this, SettingActivity.class);
-							//startActivity(intent);
+							Intent intent = new Intent(BrowserActivity.this, SettingActivity.class);
+							startActivity(intent);
 							break;
 						default:
 							break;
@@ -669,7 +727,7 @@ public class BrowserActivity extends Activity
 	@Override
 	public boolean onKeyLongPress(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new AlertDialog.Builder(this).setMessage("清楚浏览数据并退出.").setNegativeButton(android.R.string.cancel, null).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(this).setMessage("清楚浏览数据并退出").setNegativeButton(android.R.string.cancel, null).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						fastView.clearHistory();

@@ -44,6 +44,9 @@
 	<!-- Images -->
     <string name="setting_title_images">图片</string>
     <string name="setting_summary_images">允许网页加载图片</string>
+	<!-- Download -->
+    <string name="setting_title_download">下载</string>
+    <string name="setting_summary_download">调用ADM下载</string>
 	
 </resources>
 

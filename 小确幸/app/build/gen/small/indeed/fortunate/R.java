@@ -25,7 +25,8 @@ public final class R {
         public static final int text=0x7f080001;
     }
     public static final class drawable {
-        public static final int progress_bar_layer_list=0x7f020000;
+        public static final int ic_dialog_search_delete=0x7f020000;
+        public static final int progress_bar_layer_list=0x7f020001;
     }
     public static final class id {
         public static final int dialog_bookmark_empty=0x7f0b0002;
@@ -40,6 +41,10 @@ public final class R {
         public static final int layout_dialog_search_delete=0x7f0b0007;
         public static final int main_content=0x7f0b000a;
         public static final int main_progress_bar=0x7f0b000b;
+        public static final int main_search_cancel=0x7f0b000f;
+        public static final int main_search_down=0x7f0b000e;
+        public static final int main_search_panel=0x7f0b000c;
+        public static final int main_search_up=0x7f0b000d;
     }
     public static final class layout {
         public static final int dialog_add_bookmark=0x7f040000;
@@ -84,6 +89,7 @@ public final class R {
          */
         public static final int menu_item_more_add_to_homescreen=0x7f090010;
         public static final int menu_item_more_find_in_page=0x7f090013;
+        public static final int setting_summary_download=0x7f09002c;
         public static final int setting_summary_images=0x7f09002a;
         public static final int setting_summary_vc_scroll_webpage=0x7f090027;
         public static final int setting_summary_vc_switch_tabs=0x7f090026;
@@ -91,14 +97,18 @@ public final class R {
         /**  Browser setting 
          */
         public static final int setting_title_browser=0x7f090024;
+        /**  Download 
+         */
+        public static final int setting_title_download=0x7f09002b;
         /**  Images 
          */
         public static final int setting_title_images=0x7f090029;
         /**  Volume key scroll 
          */
         public static final int setting_title_volume_control=0x7f090025;
-        public static final int sp_images=0x7f09002c;
-        public static final int sp_volume=0x7f09002b;
+        public static final int sp_download=0x7f09002f;
+        public static final int sp_images=0x7f09002e;
+        public static final int sp_volume=0x7f09002d;
         public static final int toast_copy_link_failed=0x7f090005;
         public static final int toast_copy_link_successfully=0x7f090004;
         public static final int toast_failed=0x7f090002;

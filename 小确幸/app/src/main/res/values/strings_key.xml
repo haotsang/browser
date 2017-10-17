@@ -10,4 +10,8 @@
         SP_IMAGES_9
     </string>
 	
+	<string name="sp_download">
+        SP_DOWNLOAD_9
+    </string>
+	
 </resources>
