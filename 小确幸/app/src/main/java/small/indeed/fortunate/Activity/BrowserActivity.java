@@ -124,7 +124,8 @@ public class BrowserActivity extends AppCompatActivity
 		} else {
 			list.add(4, "访问电脑版页面");
 		}
-
+		list.add(5, "设置");
+		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 		listView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
@@ -162,9 +163,9 @@ public class BrowserActivity extends AppCompatActivity
 								addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, agentWeb.getTitle());
 								addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, agentWeb.getFavicon());
 								sendBroadcast(addIntent);
-								ToastUtil.show(BrowserActivity.this, R.string.toast_successful);
+								Snackbar.make(coordinatorLayout, R.string.toast_successful, Snackbar.LENGTH_SHORT).show();
 							} catch (Exception e) {
-								ToastUtil.show(BrowserActivity.this, R.string.toast_failed);
+								Snackbar.make(coordinatorLayout, R.string.toast_failed, Snackbar.LENGTH_SHORT).show();
 							}
 							break;
 						case 4:
@@ -176,6 +177,10 @@ public class BrowserActivity extends AppCompatActivity
 								agentWeb.reload();
 							}
 							break;
+							case 5:
+								startActivity(new Intent(BrowserActivity.this, SettingActivity.class));
+								break;
+							
 						default:
 							break;
 					}

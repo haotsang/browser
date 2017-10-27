@@ -69,6 +69,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="small.indeed.fortunate.Activity.SettingActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize" />
     </application>
 
 </manifest>

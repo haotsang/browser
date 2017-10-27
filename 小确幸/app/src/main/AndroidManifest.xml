@@ -60,6 +60,9 @@
 			</intent-filter>
 
         </activity>
+		<activity
+            android:name=".Activity.SettingActivity"
+			android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"/>
     </application>
 
 </manifest>
