@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">sif</string>
+    <string name="app_name">小确幸</string>
 
-	<!--Toast-->
-	<string name="toast_successful">Successful</string>
-	<string name="toast_failed">Failed</string>
-	<string name="toast_start_download">Start download</string>
-	<string name="toast_copy_link_successfully">Copy link successfully</string>
-	<string name="toast_copy_link_failed">Copy link failed</string>
-	<!--Dialog-->
-	<string name="dialog_title_download_tips">Download tips</string>
-
-    <string name="dialog_title_warning">Warning</string>
-	<string name="dialog_msg_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
-
-	<string name="dialog_btn_copy_link">Copy link</string>
-	<string name="dialog_btn_download">Download</string>
-	
-	<!--ListPopupWindow-->
-	<string name="window_new_tab">New tab</string>
-	<string name="window_download_pic">Download pic</string>
-	<string name="window_empty_history">Empty history</string>
-	<string name="window_share_link">Share link</string>
-	<string name="window_copy_link">Copy link</string>
-	
-	<!--Overflow-->
-	<string name="menu_item_more_add_to_homescreen">Add to homescreen</string>
-	<string name="menu_item_download_management">Download management</string>
-
-	<string name="menu_item_more">More...</string>
-	<string name="menu_item_more_find_in_page">Find in page</string>
-	
 </resources>
-
-
-

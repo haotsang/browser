@@ -7,10 +7,10 @@
 		<item name="android:navigationBarColor">@android:color/black</item>
 		<item name="android:colorAccent">@color/blue_500</item> 
 	</style>
-	
+
 	<style name="dialogAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/anim_enter</item>
         <item name="android:windowExitAnimation">@anim/anim_exit</item>
     </style>
-	
+
 </resources>

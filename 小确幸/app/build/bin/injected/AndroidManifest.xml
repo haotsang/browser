@@ -35,8 +35,10 @@
 
 		<activity
 			android:name=".Activity.BrowserActivity"
-			android:configChanges="orientation|screenSize"
-			android:hardwareAccelerated="true">
+			android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
+			android:windowSoftInputMode="adjustResize"
+			android:hardwareAccelerated="true"
+			android:autoRemoveFromRecents="true">
 
 			<intent-filter>
 
@@ -127,10 +129,6 @@
 			</intent-filter>
 
 		</activity>
-
-		<activity
-			android:name=".Activity.SettingActivity"
-			android:configChanges="keyboardHidden|orientation|screenLayout|screenSize"/>
 
 	</application>
 

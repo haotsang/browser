@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
-    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 		<item name="android:windowBackground">@android:color/white</item>
 		<item name="android:statusBarColor">@android:color/black</item>
 		<item name="android:navigationBarColor">@android:color/black</item>
-		<item name="android:colorAccent">@color/blue_500</item> 
+		<item name="colorAccent">@color/blue_500</item>
 	</style>
 	
-</resources>
-
+  </resources>

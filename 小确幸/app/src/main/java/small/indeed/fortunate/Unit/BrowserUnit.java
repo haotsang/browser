@@ -11,14 +11,13 @@ import android.webkit.*;
 import java.util.regex.*;
 import small.indeed.fortunate.*;
 import small.indeed.fortunate.View.*;
-import android.database.*;
 
 public class BrowserUnit
 {
 	public static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
     public static final String SUFFIX_TXT = ".txt";
-	
+
 	public static final String MIME_TYPE_TEXT_HTML = "text/html";
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
     public static final String MIME_TYPE_IMAGE = "image/*";
@@ -28,7 +27,7 @@ public class BrowserUnit
     public static final String BOOKMARK_TITLE = "{title}";
     public static final String BOOKMARK_URL = "{url}";
     public static final String BOOKMARK_TIME = "{time}";
-	
+
 	public static final String SEARCH_ENGINE_BAIDU = "https://m.baidu.com/s?from=&wd=";
     public static final String SEARCH_ENGINE_BING = "https://cn.bing.com/search?q=";
 	public static final String SEARCH_ENGINE_GOOGLE = "https://www.google.com/search?q=";
@@ -48,14 +47,15 @@ public class BrowserUnit
     public static final String URL_SCHEME_HTTP = "http://";
     public static final String URL_SCHEME_HTTPS = "https://";
     public static final String URL_SCHEME_INTENT = "intent://";
-	
+
+
 	public static boolean isUrl(String trim) {
         String pattern = "^(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)|(www\\.))+(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(trim);
         return m.matches();
 	}
-	
+
 	public static void showSoftInput(Context context, View view) {
         view.requestFocus();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -100,11 +100,9 @@ public class BrowserUnit
             } catch (Exception e) {
                 ToastUtil.show(context, R.string.toast_intent_failed);
             }
-        } else {
-			context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.coolapk.com/apk/com.dv.adm.pay")));
         }
     }
-	
+
 	public static boolean hasApp(Context context, String packgename) {
 		PackageInfo packageInfo;
 		try {
@@ -118,7 +116,8 @@ public class BrowserUnit
 			return true;
 		}
 	}
-	
+
 
 }
+
 
