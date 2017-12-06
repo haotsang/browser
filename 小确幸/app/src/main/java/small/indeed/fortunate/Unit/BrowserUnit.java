@@ -12,8 +12,8 @@ import java.util.regex.*;
 import small.indeed.fortunate.*;
 import small.indeed.fortunate.View.*;
 
-public class BrowserUnit
-{
+public class BrowserUnit {
+	
 	public static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
     public static final String SUFFIX_TXT = ".txt";
@@ -48,7 +48,6 @@ public class BrowserUnit
     public static final String URL_SCHEME_HTTPS = "https://";
     public static final String URL_SCHEME_INTENT = "intent://";
 
-
 	public static boolean isUrl(String trim) {
         String pattern = "^(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)|(www\\.))+(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
         Pattern r = Pattern.compile(pattern);
@@ -72,7 +71,7 @@ public class BrowserUnit
         ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData data = ClipData.newPlainText(null, url.trim());
         manager.setPrimaryClip(data);
-        ToastUtil.show(context, context.getResources().getString(R.string.toast_copy_link_successfully));
+        ToastUtil.show(context, R.string.toast_copy_link_successfully);
     }
 
     public static void download(Context context, String url, String contentDisposition, String mimeType) {
@@ -98,7 +97,6 @@ public class BrowserUnit
 				startApp.setDataAndType(Uri.parse(url), mimeType);
 				context.startActivity(startApp);
             } catch (Exception e) {
-                ToastUtil.show(context, R.string.toast_intent_failed);
             }
         }
     }
@@ -119,5 +117,6 @@ public class BrowserUnit
 
 
 }
+
 
 

@@ -1,13 +1,11 @@
 package small.indeed.fortunate.View;
 
 import android.content.*;
-import android.os.*;
-import android.webkit.*;
-import small.indeed.fortunate.Unit.*;
 import android.util.*;
+import android.webkit.*;
 
 public class AgentWeb extends WebView {
-	
+
 	public AgentWeb(Context context) {
         super(context);
 		this.initWebView();
@@ -60,7 +58,7 @@ public class AgentWeb extends WebView {
         getSettings().setGeolocationEnabled(true);
 		getSettings().setGeolocationDatabasePath(getContext().getFilesDir().toString());
         getSettings().setSupportMultipleWindows(true);
-        getSettings().setDefaultTextEncodingName(BrowserUnit.URL_ENCODING_UTF);
+        getSettings().setDefaultTextEncodingName("UTF-8");
 		getSettings().setPluginState(WebSettings.PluginState.ON);
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         getSettings().setLoadWithOverviewMode(true);
@@ -78,7 +76,7 @@ public class AgentWeb extends WebView {
         onResume();
         resumeTimers();
     }
-	
+
 	@Override
 	public void destroy() {
         stopLoading();
@@ -89,5 +87,6 @@ public class AgentWeb extends WebView {
         super.destroy();
     }
 }
+
 
 

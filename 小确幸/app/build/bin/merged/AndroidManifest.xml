@@ -29,7 +29,7 @@
             android:autoRemoveFromRecents="true"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,7 +71,8 @@
         </activity>
         <activity
             android:name="small.indeed.fortunate.Activity.SettingActivity"
-            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize" />
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

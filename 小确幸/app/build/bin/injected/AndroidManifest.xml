@@ -35,8 +35,8 @@
 
 		<activity
 			android:name=".Activity.BrowserActivity"
+			android:label="@string/app_name"
 			android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
-			android:windowSoftInputMode="adjustResize"
 			android:hardwareAccelerated="true"
 			android:autoRemoveFromRecents="true">
 
@@ -132,6 +132,7 @@
 
 		<activity
 			android:name=".Activity.SettingActivity"
+			android:label="@string/app_name"
 			android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"/>
 
 	</application>

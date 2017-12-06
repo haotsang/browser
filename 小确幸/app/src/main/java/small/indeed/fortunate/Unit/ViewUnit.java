@@ -5,8 +5,8 @@ import android.graphics.drawable.*;
 import android.os.*;
 import android.util.*;
 
-public class ViewUnit
-{
+public class ViewUnit {
+	
 	public static float dp2px(Context context, float dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics);

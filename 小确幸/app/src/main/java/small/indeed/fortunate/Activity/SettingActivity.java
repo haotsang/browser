@@ -1,10 +1,10 @@
 package small.indeed.fortunate.Activity;
 
+import android.app.*;
 import android.os.*;
-import android.support.v7.app.*;
 import small.indeed.fortunate.Fragment.*;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
