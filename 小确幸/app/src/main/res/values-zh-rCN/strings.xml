@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">小确幸</string>
+    <string name="app_name">H</string>
 	
 	<!--Toast-->
 	<string name="toast_successful">成功</string>
@@ -31,6 +31,14 @@
 	
 	<!-- Browser setting -->
     <string name="setting_title_browser">浏览设置</string>
+	<!-- Search engine -->
+	<string name="setting_title_search_engine">搜索引擎</string>
+	<string name="setting_summary_search_engine_bing">必应</string>
+	<string name="setting_summary_search_engine_baidu">百度</string>
+	<!-- User Agent -->
+    <string name="setting_title_user_agent">浏览器标识</string>
+    <string name="setting_summary_user_agent_default">默认</string>
+    <string name="setting_summary_user_agent_desktop">桌面</string>
 	
 </resources>
 

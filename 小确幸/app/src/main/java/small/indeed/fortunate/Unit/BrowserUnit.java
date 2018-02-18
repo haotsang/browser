@@ -8,6 +8,7 @@ import android.os.*;
 import android.view.*;
 import android.view.inputmethod.*;
 import android.webkit.*;
+import java.util.*;
 import java.util.regex.*;
 import small.indeed.fortunate.*;
 import small.indeed.fortunate.View.*;
@@ -47,14 +48,33 @@ public class BrowserUnit {
     public static final String URL_SCHEME_HTTP = "http://";
     public static final String URL_SCHEME_HTTPS = "https://";
     public static final String URL_SCHEME_INTENT = "intent://";
+	
+    public static boolean isURL(String url) {
+        if (url == null) {
+            return false;
+        }
 
-	public static boolean isUrl(String trim) {
-        String pattern = "^(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)|(www\\.))+(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(trim);
-        return m.matches();
-	}
+        url = url.toLowerCase(Locale.getDefault());
+        if (url.startsWith(URL_ABOUT_BLANK)
+			|| url.startsWith(URL_SCHEME_MAIL_TO)
+			|| url.startsWith(URL_SCHEME_FILE)) {
+            return true;
+        }
 
+        String regex = "^((ftp|http|https|intent)?://)"                      // support scheme
+			+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
+			+ "(([0-9]{1,3}\\.){3}[0-9]{1,3}"                            // IP形式的URL -> 199.194.52.184
+			+ "|"                                                        // 允许IP和DOMAIN（域名）
+			+ "([0-9a-z_!~*'()-]+\\.)*"                                  // 域名 -> www.
+			+ "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\."                    // 二级域名
+			+ "[a-z]{2,6})"                                              // first level domain -> .com or .museum
+			+ "(:[0-9]{1,4})?"                                           // 端口 -> :80
+			+ "((/?)|"                                                   // a slash isn't required if there is no file name
+			+ "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(url).matches();
+    }
+	
 	public static void showSoftInput(Context context, View view) {
         view.requestFocus();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

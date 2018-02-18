@@ -1,0 +1,27 @@
+<?xml version ="1.0" encoding ="utf-8" ?>
+<resources>
+
+	<!-- Search engine -->
+    <string-array name="setting_entries_search_engine">
+		<item>@string/setting_summary_search_engine_bing</item>
+		<item>@string/setting_summary_search_engine_baidu</item>
+    </string-array>
+    <string-array name="setting_values_search_engine">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+	<!-- User agent -->
+    <string-array name="setting_entries_user_agent">
+        <item>@string/setting_summary_user_agent_default</item>
+        <item>@string/setting_summary_user_agent_desktop</item>
+    </string-array>
+    <string-array name="setting_values_user_agent">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+	
+</resources>
+
+
+
