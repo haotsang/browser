@@ -62,8 +62,8 @@ public class BrowserActivity extends Activity {
     private View popupView;
 	
 	private MyGridAdapter adapter; 
-	private int[] icons = { R.drawable.ic_menu_find, R.drawable.ic_menu_qa, R.drawable.ic_menu_translate, R.drawable.ic_menu_details, R.drawable.ic_menu_share, R.drawable.ic_menu_downloads, R.drawable.ic_menu_settings };
-	private String [] titles = { "页内查找", "发至桌面", "翻译网页", "网页信息", "分享", "下载", "设置" };
+	private int[] icons = { R.drawable.ic_menu_find, R.drawable.ic_menu_qa, R.drawable.ic_menu_translate, R.drawable.ic_menu_source, R.drawable.ic_menu_sniffing, R.drawable.ic_menu_log, R.drawable.ic_menu_share, R.drawable.ic_menu_downloads, R.drawable.ic_menu_settings };
+	private String [] titles = { "页内查找", "发至桌面", "翻译网页", "源码", "资源嗅探", "网络日志", "分享", "下载", "设置" };
 	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -429,33 +429,7 @@ public class BrowserActivity extends Activity {
 								
 								break;
 							case 3:
-								AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-								builder.setTitle(agentWeb.getTitle());
-								builder.setMessage(agentWeb.getUrl());
-								builder.setNeutralButton("使用相关应用打开", new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(agentWeb.getUrl()));
-											startActivity(intent);
-										}
-									});
-								builder.setNegativeButton("二维码", new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-											builder.setMessage("source");
-											AlertDialog alertDialog = builder.create();
-											alertDialog.show();
-										}
-									});
-								builder.setPositiveButton("源码", new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											agentWeb.loadUrl("javascript:alert(document.getElementsByTagName('html')[0].innerHTML);");
-										}
-									});
-								AlertDialog alertDialog = builder.create();
-								alertDialog.show();
+								agentWeb.loadUrl("javascript:alert(document.getElementsByTagName('html')[0].innerHTML);");
 								break;
 							case 4:
 								try {

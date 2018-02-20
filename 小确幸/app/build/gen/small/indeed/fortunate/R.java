@@ -43,17 +43,20 @@ public final class R {
         public static final int ic_menu_details=0x7f020009;
         public static final int ic_menu_downloads=0x7f02000a;
         public static final int ic_menu_find=0x7f02000b;
-        public static final int ic_menu_qa=0x7f02000c;
-        public static final int ic_menu_settings=0x7f02000d;
-        public static final int ic_menu_share=0x7f02000e;
-        public static final int ic_menu_translate=0x7f02000f;
-        public static final int ic_muti_window=0x7f020010;
-        public static final int ic_qrcode=0x7f020011;
-        public static final int ic_refresh=0x7f020012;
-        public static final int ic_search=0x7f020013;
-        public static final int ic_stop=0x7f020014;
-        public static final int progress_bar_layer_list=0x7f020015;
-        public static final int round_corner_shape=0x7f020016;
+        public static final int ic_menu_log=0x7f02000c;
+        public static final int ic_menu_qa=0x7f02000d;
+        public static final int ic_menu_settings=0x7f02000e;
+        public static final int ic_menu_share=0x7f02000f;
+        public static final int ic_menu_sniffing=0x7f020010;
+        public static final int ic_menu_source=0x7f020011;
+        public static final int ic_menu_translate=0x7f020012;
+        public static final int ic_muti_window=0x7f020013;
+        public static final int ic_qrcode=0x7f020014;
+        public static final int ic_refresh=0x7f020015;
+        public static final int ic_search=0x7f020016;
+        public static final int ic_stop=0x7f020017;
+        public static final int progress_bar_layer_list=0x7f020018;
+        public static final int round_corner_shape=0x7f020019;
     }
     public static final class id {
         public static final int dialog_search_EditText=0x7f0c0013;
