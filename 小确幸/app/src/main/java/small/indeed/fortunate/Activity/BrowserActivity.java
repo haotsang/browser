@@ -1,5 +1,6 @@
 package small.indeed.fortunate.Activity;
 
+import android.animation.*;
 import android.app.*;
 import android.content.*;
 import android.content.pm.*;
@@ -7,50 +8,41 @@ import android.graphics.*;
 import android.net.*;
 import android.net.http.*;
 import android.os.*;
+import android.preference.*;
+import android.support.design.widget.*;
+import android.support.v7.app.*;
 import android.text.*;
 import android.text.method.*;
 import android.view.*;
+import android.view.animation.*;
+import android.view.inputmethod.*;
 import android.webkit.*;
 import android.widget.*;
+import android.widget.AdapterView.*;
 import android.widget.TextView.*;
 import java.util.*;
 import small.indeed.fortunate.*;
 import small.indeed.fortunate.Unit.*;
 import small.indeed.fortunate.View.*;
 
+import android.support.v7.app.AlertDialog;
 import android.text.ClipboardManager;
-import android.animation.*;
-import android.view.animation.*;
-import android.view.inputmethod.*;
-import android.graphics.drawable.*;
-import android.provider.*;
-import android.widget.AdapterView.*;
-import android.preference.*;
-import android.content.res.*;
+import android.support.v4.widget.*;
+import small.indeed.fortunate.Activity.BrowserActivity.*;
+import android.util.*;
+import java.lang.reflect.*;
+import android.support.v7.widget.*;
 
-public class BrowserActivity extends Activity {
+public class BrowserActivity extends AppCompatActivity {
 	
-	private RelativeLayout omnibox;
-	private ImageButton omniboxSearch;
-	private AutoCompleteTextView inputBox;
-	private ImageButton omniboxRefresh;
+	private CoordinatorLayout coordinatorLayout;
+	private SwipeRefreshLayout swipeRefreshLayout;
+	private AgentWeb agentWeb;
 	private ProgressBar progressBar;
 	
-	private RelativeLayout searchPanel;
-    private EditText searchBox;
-    private ImageButton searchUp;
-    private ImageButton searchDown;
-    private ImageButton searchCancel;
-	
-	private RelativeLayout omniboxBottom;
-	private ImageButton omniboxBack;
-	private ImageButton omniboxForward;
-	private ImageButton omniboxHome;
-	private ImageButton omniboxMulti;
-	private ImageButton omniboxMenu;
-	
-	private AgentWeb agentWeb;
-	private View dismissView;
+	private AppCompatAutoCompleteTextView inputBox;
+	private AppCompatImageButton omniboxMulti;
+	private AppCompatImageButton omniboxOverflow;
 	
 	private View customView;
     private VideoView videoView;
@@ -58,12 +50,9 @@ public class BrowserActivity extends Activity {
     private WebChromeClient.CustomViewCallback customViewCallback;
 	private ValueCallback<Uri[]> filePathCallback = null;
 	
-    private PopupWindow popupWindow;
-    private View popupView;
 	
-	private MyGridAdapter adapter; 
-	private int[] icons = { R.drawable.ic_menu_find, R.drawable.ic_menu_qa, R.drawable.ic_menu_translate, R.drawable.ic_menu_source, R.drawable.ic_menu_sniffing, R.drawable.ic_menu_log, R.drawable.ic_menu_share, R.drawable.ic_menu_downloads, R.drawable.ic_menu_settings };
-	private String [] titles = { "页内查找", "发至桌面", "翻译网页", "源码", "资源嗅探", "网络日志", "分享", "下载", "设置" };
+	private int[] icons = { R.drawable.ap, R.drawable.aw, R.drawable.a3, R.drawable.ay, R.drawable.a6, R.drawable.ax };
+	private String [] titles = { "刷新网页", "发至桌面", "源码", "分享", "下载", "设置" };
 	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -76,37 +65,8 @@ public class BrowserActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-		initStart();
 		initOmnibox();
-		initSearchPanel();
-		initAutoComplete();
 		initWebView();
-	}
-
-	private void initAutoComplete() {
-		List<String> item = new ArrayList<>();
-		item.add("v");
-		item.add("vv");
-        item.add("vvv");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, item);
-        inputBox.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            inputBox.setDropDownVerticalOffset(6);
-        }
-        inputBox.setDropDownWidth(ViewUnit.getWindowWidth(this));
-        inputBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//					String url = ((TextView) view.findViewById(R.id.complete_item_url)).getText().toString();
-//					inputBox.setText(Html.fromHtml(BrowserUnit.urlWrapper(url)), EditText.BufferType.SPANNABLE);
-					//inputBox.setSelection(url.length());
-					
-					BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
-				}
-			});
-			
 	}
 	
 	@Override
@@ -133,32 +93,63 @@ public class BrowserActivity extends Activity {
 		} else if (inputBox.hasFocus()) {
 			BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
 		} else {
-			finishAndRemoveTask();
+			super.onBackPressed();
 		}
 	}
 	
 	private void initOmnibox() {
-		omnibox = (RelativeLayout) findViewById(R.id.main_omnibox);
-		omniboxSearch = (ImageButton) findViewById(R.id.main_omnibox_search);
-		inputBox = (AutoCompleteTextView) findViewById(R.id.main_omnibox_inputbox);
-		omniboxRefresh = (ImageButton) findViewById(R.id.main_omnibox_refresh);
+		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+		agentWeb = (AgentWeb) findViewById(R.id.page);
 		progressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
-
-		omniboxBottom = (RelativeLayout) findViewById(R.id.main_omnibox_bottom);
-		omniboxBack = (ImageButton) findViewById(R.id.main_omnibox_back);
-		omniboxForward = (ImageButton) findViewById(R.id.main_omnibox_forward);
-		omniboxHome = (ImageButton) findViewById(R.id.main_omnibox_home);
-		omniboxMulti = (ImageButton) findViewById(R.id.main_omnibox_multi);
-		omniboxMenu = (ImageButton) findViewById(R.id.main_omnibox_menu);
-
-		inputBox.setOnEditorActionListener(new OnEditorActionListener() {
+		
+		inputBox = (AppCompatAutoCompleteTextView) findViewById(R.id.main_omnibox_inputbox);
+		omniboxMulti = (AppCompatImageButton) findViewById(R.id.main_omnibox_multi);
+		omniboxOverflow = (AppCompatImageButton) findViewById(R.id.main_omnibox_overflow);
+		
+		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+			if (getIntent().getData() != null) {
+				this.agentWeb.loadUrl(getIntent().getData().toString());
+			}
+		} else if (Intent.ACTION_WEB_SEARCH.equals(getIntent().getAction())) {
+			if (getIntent().getStringExtra("query").length() > 0) {
+				this.agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BAIDU + getIntent().getStringExtra("query"));
+			} else if (BrowserUnit.isURL(getIntent().getStringExtra("query"))) {
+				this.agentWeb.loadUrl(getIntent().getStringExtra("query"));
+			}
+		} else {
+			this.agentWeb.loadUrl("about:blank");
+		}
+		
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 				@Override
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				public void onRefresh() {
+					agentWeb.reload();
+				}
+			});
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_light,
+										  android.R.color.holo_red_light,
+										  android.R.color.holo_orange_light,
+										  android.R.color.holo_green_light);
+		
+		if (BrowserUnit.isURL(ClipboardUrl())) {
+			Snackbar.make(coordinatorLayout, ClipboardUrl(), Snackbar.LENGTH_SHORT).setAction("打开", new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						agentWeb.loadUrl(ClipboardUrl());
+					}
+				}).show();
+		}
+		
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(BrowserActivity.this, android.R.layout.simple_list_item_1, titles);
+		inputBox.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+
+		inputBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					String query = inputBox.getText().toString().trim();
 
-					if (query.isEmpty()) {
-						return true;
-					}
 					if (BrowserUnit.isURL(query)) {
 						agentWeb.loadUrl(query);
 					} else {
@@ -171,7 +162,29 @@ public class BrowserActivity extends Activity {
 						}
 					}
 					BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
+				}
+			});
 
+		inputBox.setOnEditorActionListener(new OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					String query = inputBox.getText().toString().trim();
+					if (query.isEmpty()) {
+						return true;
+					} else {
+						if (BrowserUnit.isURL(query)) {
+							agentWeb.loadUrl(query);
+						} else {
+							SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BrowserActivity.this);
+							int i = Integer.valueOf(sp.getString(getString(R.string.sp_search_engine), "0"));
+							if (i == 0) {
+								agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BING + query);
+							} else if (i == 1) {
+								agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BAIDU + query);
+							}
+						}
+						BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
+					}
 					return false;
 				}
 			});
@@ -186,7 +199,7 @@ public class BrowserActivity extends Activity {
 					if (arg0.toString().equals("")) {
 						
 					} else {
-
+						
 					}
 				}}
 		);
@@ -194,171 +207,99 @@ public class BrowserActivity extends Activity {
 		inputBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 				@Override  
 				public void onFocusChange(View v, boolean hasFocus) {  
-					if (hasFocus) {//获得焦点  
-					
+					if (hasFocus) {//获得焦点
 						inputBox.showDropDown();
-						
-						dismissView.setVisibility(View.VISIBLE);
-						omniboxRefresh.setImageResource(R.drawable.ic_search);
-					} else {//失去焦点  
-						dismissView.setVisibility(View.GONE);
-						omniboxRefresh.setImageResource(R.drawable.ic_refresh);
+					} else {//失去焦点
+						BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
 					}  
 				}             
 			});
-
-		omniboxRefresh.setOnClickListener(new View.OnClickListener() {
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		omniboxMulti.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					final SheetDialog dialog = new SheetDialog(BrowserActivity.this);
+					View contentView = View.inflate(BrowserActivity.this, R.layout.activity_main, null);
+					dialog.setContentView(contentView);
+					dialog.show();
+				}
+			});
+			
+		omniboxOverflow.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					if (agentWeb.getProgress() == 100) {
-						agentWeb.reload();
+						showOverflow();
 					} else {
 						agentWeb.stopLoading();
 					}
 				}
-			});
-			
-		omniboxBack.setOnClickListener(new View.OnClickListener() {
+		});
+		
+	}
+	
+	private void showOverflow() {
+		final SheetDialog dialog = new SheetDialog(BrowserActivity.this);
+		View contentView = View.inflate(this, R.layout.grid_view, null);
+		GridView gridView = (GridView) contentView.findViewById(R.id.gridview);
+		MyGridAdapter adapter = new MyGridAdapter();
+		gridView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+		gridView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
-				public void onClick(View v) {
-					if (agentWeb.canGoBack()) {
-						agentWeb.goBack();
-					}
-				}
-			});
+				public void onItemClick(AdapterView<?> parent, View view,
+										int position, long id) {
+					dialog.dismiss();
+					switch (position) {
+						case 0:
+							agentWeb.reload();
+							break;
+						case 1:
+							try {
+								Intent shortcutIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+								shortcutIntent.setData(Uri.parse(agentWeb.getUrl()));
+								shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);// 加入action,和category之后，程序卸载的时候才会主动将该快捷方式也卸载
 
-		omniboxForward.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (agentWeb.canGoForward()) {
-						agentWeb.goForward();
-					}
-				}
-			});
-
-		omniboxHome.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					agentWeb.loadUrl("about:blank");
-				}
-			});
-
-		omniboxMulti.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					PopupMenu popMenu = new PopupMenu(BrowserActivity.this, omniboxMulti);
-					popMenu.getMenuInflater().inflate(R.menu.menu_popup, popMenu.getMenu());
-					popMenu.show();
-					
-					popMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-							@Override
-							public boolean onMenuItemClick(MenuItem item) {
-								switch (item.getItemId()) {
-									case R.id.item_multi:
-										Intent intent = new Intent(BrowserActivity.this, BrowserActivity.class);
-										intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-										startActivity(intent, ActivityOptions.makeBasic().toBundle());
-										break;
-									default:
-										break;
-								}
-								return true;
+								Intent addIntent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+								addIntent.putExtra("duplicate", false);	// 不重复创建快捷方式图标
+								addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+								addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, agentWeb.getTitle());
+								addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, agentWeb.getFavicon());
+								sendBroadcast(addIntent);
+								Snackbar.make(coordinatorLayout, R.string.toast_successful, Snackbar.LENGTH_SHORT).show();
+							} catch (Exception e) {
+								Snackbar.make(coordinatorLayout, R.string.toast_failed, Snackbar.LENGTH_SHORT).show();
 							}
-						});
+							break;
+						case 2:
+							agentWeb.loadUrl("javascript:alert(document.getElementsByTagName('html')[0].innerHTML);");
+							break;
+						case 3:
+							try {
+								IntentUnit.share(BrowserActivity.this, agentWeb.getUrl());
+							} catch (Exception e) {}
+							break;
+						case 4:
+							//通过包名启动应用
+							try { 
+								Intent i = getPackageManager().getLaunchIntentForPackage("com.dv.adm.pay");
+								startActivity(i);
+							} catch (Exception e) { 
+								Intent i = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+								startActivity(i); 
+							}
+							break;
+						case 5:
+							startActivity(new Intent(BrowserActivity.this, SettingActivity.class));
+							break;
+						default:
+							break;
+					}
 				}
 			});
-			
-		omniboxMenu.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					showPopupWindow(v);
-				}
-			});
+			dialog.setContentView(contentView);
+			dialog.show();
 	}
-
-	private void initSearchPanel() {
-		searchPanel = (RelativeLayout) findViewById(R.id.main_search_panel);
-        searchBox = (EditText) findViewById(R.id.main_search_box);
-        searchUp = (ImageButton) findViewById(R.id.main_search_up);
-        searchDown = (ImageButton) findViewById(R.id.main_search_down);
-        searchCancel = (ImageButton) findViewById(R.id.main_search_cancel);
-
-		searchBox.addTextChangedListener(new TextWatcher() {
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				}
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
-				}
-				@Override
-				public void afterTextChanged(Editable s) {
-					if (agentWeb != null) {
-						agentWeb.findAllAsync(s.toString());
-					}
-				}
-			});
-
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-				@Override
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-					if (actionId != EditorInfo.IME_ACTION_DONE) {
-						return false;
-					}
-
-					if (searchBox.getText().toString().isEmpty()) {
-						return true;
-					}
-					return false;
-				}
-			});
-
-        searchUp.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					String query = searchBox.getText().toString();
-					if (query.isEmpty()) {
-						return;
-					}
-
-					BrowserUnit.hideSoftInput(BrowserActivity.this, searchBox);
-					agentWeb.findNext(false);
-				}
-			});
-
-        searchDown.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					String query = searchBox.getText().toString();
-					if (query.isEmpty()) {
-						return;
-					}
-
-					BrowserUnit.hideSoftInput(BrowserActivity.this, searchBox);
-					agentWeb.findNext(true);
-
-				}
-			});
-
-        searchCancel.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					hideSearchPanel();
-				}
-			});
-	}
-
-	private void hideSearchPanel() {
-        BrowserUnit.hideSoftInput(BrowserActivity.this, searchBox);
-        searchBox.setText("");
-        searchPanel.setVisibility(View.GONE);
-        omnibox.setVisibility(View.VISIBLE);
-    }
-
-    private void showSearchPanel() {
-        omnibox.setVisibility(View.GONE);
-        searchPanel.setVisibility(View.VISIBLE);
-        BrowserUnit.showSoftInput(BrowserActivity.this ,searchBox);
-    }
 	
 	private String ClipboardUrl() {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService("clipboard");
@@ -380,146 +321,6 @@ public class BrowserActivity extends Activity {
         return str;
     }
 	
-	/**
-     * 弹出popupWindow更改头像
-     */
-    private void showPopupWindow(View v) {
-        if (popupWindow == null) {
-            popupView = View.inflate(this, R.layout.grid_view, null);
-            popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-					@Override
-					public void onDismiss() {
-						WindowManager.LayoutParams lp = getWindow().getAttributes();
-						lp.alpha = 1f;
-						getWindow().setAttributes(lp);
-					}
-				});
-				
-			GridView gridView = (GridView) popupView.findViewById(R.id.gridview);
-			adapter = new MyGridAdapter();
-			gridView.setAdapter(adapter);
-			gridView.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-											int position, long id) {
-								popupWindow.dismiss();
-						switch (position) {
-							case 0:
-								showSearchPanel();
-								break;
-							case 1:
-								try {
-									Intent shortcutIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-									shortcutIntent.setData(Uri.parse(agentWeb.getUrl()));
-									shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);// 加入action,和category之后，程序卸载的时候才会主动将该快捷方式也卸载
-
-									Intent addIntent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-									addIntent.putExtra("duplicate", false);	// 不重复创建快捷方式图标
-									addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-									addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, agentWeb.getTitle());
-									addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, agentWeb.getFavicon());
-									sendBroadcast(addIntent);
-									ToastUtil.show(BrowserActivity.this, R.string.toast_successful);
-								} catch (Exception e) {
-									ToastUtil.show(BrowserActivity.this, R.string.toast_failed);
-								}
-								break;
-							case 2:
-								
-								break;
-							case 3:
-								agentWeb.loadUrl("javascript:alert(document.getElementsByTagName('html')[0].innerHTML);");
-								break;
-							case 4:
-								try {
-									IntentUnit.share(BrowserActivity.this, agentWeb.getUrl());
-								} catch (Exception e) {}
-								break;
-							case 5:
-								//通过包名启动应用
-								try { 
-									Intent intent = getPackageManager().getLaunchIntentForPackage("com.dv.adm.pay");
-									startActivity(intent); 
-								} catch (Exception e) { 
-									Intent i = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
-									startActivity(i); 
-								}
-								break;
-							case 6:
-								startActivity(new Intent(BrowserActivity.this, SettingActivity.class));
-								break;
-							default:
-								break;
-						}
-					}
-				});
-			
-			popupWindow.setAnimationStyle(R.style.dialogAnimation);
-            popupWindow.setBackgroundDrawable(new BitmapDrawable());
-            popupWindow.setFocusable(true);
-            popupWindow.setOutsideTouchable(true);
-			popupWindow.update();
-			
-        }
-		
-        if (popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        } else {
-			popupWindow.showAtLocation(v, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-			WindowManager.LayoutParams lp = getWindow().getAttributes();
-			lp.alpha = 0.6f;
-			getWindow().setAttributes(lp);
-		}
-		
-    }
-	
-	private void initStart() {
-		agentWeb = (AgentWeb) findViewById(R.id.page);
-		dismissView = findViewById(R.id.dismissView);
-		dismissView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
-				}
-			});
-		
-		
-		Uri intentData = getIntent().getData();
-		String intentString = getIntent().getDataString();
-		String intentAction = getIntent().getAction();
-		String intentExtra = getIntent().getStringExtra("query");
-		
-		if (intentString != null) {
-			this.agentWeb.loadUrl(intentString);
-		} else if (Intent.ACTION_VIEW.equals(intentAction)) {
-			if (intentData != null) {
-				this.agentWeb.loadUrl(intentData.toString());
-			}
-		} else if (Intent.ACTION_WEB_SEARCH.equals(intentAction)) {
-			if (intentExtra.length() > 0) {
-				this.agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BAIDU + intentExtra);
-			} else if (intentExtra.startsWith(BrowserUnit.URL_SCHEME_HTTP) || intentExtra.startsWith(BrowserUnit.URL_SCHEME_HTTPS) || intentExtra.startsWith(BrowserUnit.URL_SCHEME_FILE)) {
-				this.agentWeb.loadUrl(intentExtra);
-			}
-		} else {
-			this.agentWeb.loadUrl("");
-		}
-
-		if (ClipboardUrl().startsWith("http://") || ClipboardUrl().startsWith("https://")) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-			builder.setMessage("剪贴板发现网址。是否打开？");
-			builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						agentWeb.loadUrl(ClipboardUrl());
-					}
-				});
-			AlertDialog alertDialog = builder.create();
-			alertDialog.show();
-		}
-	}
-
 	private void initWebView() {
 		agentWeb.setWebViewClient(new WebViewClient() {
 				@Override
@@ -534,13 +335,7 @@ public class BrowserActivity extends Activity {
 				@Override
 				public void onPageFinished(WebView view, String url) {
 					super.onPageFinished(view, url);
-					if (agentWeb.canGoForward()) {
-						omniboxForward.setEnabled(true);
-						omniboxForward.setImageResource(R.drawable.ic_arrow_right);
-					} else {
-						omniboxForward.setEnabled(false);
-						omniboxForward.setImageResource(R.drawable.ic_arrow_right_disable);
-					}
+					
 				}
 				@Override
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -651,6 +446,11 @@ public class BrowserActivity extends Activity {
 				@Override
 				public void onProgressChanged(WebView view, int newProgress) {
 					super.onProgressChanged(view, newProgress);
+					if(newProgress == 100) {
+						swipeRefreshLayout.setRefreshing(false);
+					} else if (!swipeRefreshLayout.isRefreshing()) {
+						swipeRefreshLayout.setRefreshing(true);
+					}
 					//			        //平滑的加载进度
 					if (newProgress < 2) {
 						progressBar.setProgress(2);
@@ -674,9 +474,9 @@ public class BrowserActivity extends Activity {
 								public void onAnimationStart(Animator animation) {}
 								@Override
 								public void onAnimationEnd(Animator animation) {
+									omniboxOverflow.setImageResource(R.drawable.ag);
 									progressBar.setVisibility(View.GONE);
 									progressBar.setAlpha(1);
-									omniboxRefresh.setImageResource(R.drawable.ic_refresh);
 								}
 								@Override
 								public void onAnimationCancel(Animator animation) {}
@@ -686,8 +486,8 @@ public class BrowserActivity extends Activity {
 						outAni.start();
 					} else {
 						//进度条加载时始终使其可见
+						omniboxOverflow.setImageResource(R.drawable.a2);
 						progressBar.setVisibility(View.VISIBLE);
-						omniboxRefresh.setImageResource(R.drawable.ic_stop);
 					}
 				}
 				@Override
@@ -823,16 +623,12 @@ public class BrowserActivity extends Activity {
 					if (BrowserUnit.hasApp(BrowserActivity.this, "com.dv.adm.pay")) {
 						BrowserUnit.downloadByADM(BrowserActivity.this, url, mimeType);
 					} else {
-						AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-						builder.setMessage("确定下载？");
-						builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						Snackbar.make(coordinatorLayout, contentDisposition, Snackbar.LENGTH_INDEFINITE).setAction("下载", new View.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
+								public void onClick(View v) {
 									BrowserUnit.download(BrowserActivity.this, url, contentDisposition, mimeType);
 								}
-							});
-						AlertDialog alertDialog = builder.create();
-						alertDialog.show();
+							}).show();
 					}
 				}
 			});
@@ -875,16 +671,12 @@ public class BrowserActivity extends Activity {
 										if (BrowserUnit.hasApp(BrowserActivity.this, "com.dv.adm.pay")) {
 											BrowserUnit.downloadByADM(BrowserActivity.this, target, BrowserUnit.MIME_TYPE_IMAGE);
 										} else {
-											AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-											builder.setMessage("确定下载？");
-											builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+											Snackbar.make(coordinatorLayout, target, Snackbar.LENGTH_INDEFINITE).setAction("下载", new View.OnClickListener() {
 													@Override
-													public void onClick(DialogInterface dialog, int which) {
+													public void onClick(View v) {
 														BrowserUnit.download(BrowserActivity.this, target, target, BrowserUnit.MIME_TYPE_IMAGE);
 													}
-												});
-											AlertDialog alertDialog = builder.create();
-											alertDialog.show();
+												}).show();
 										}
 										break;
 									default:
@@ -920,16 +712,13 @@ public class BrowserActivity extends Activity {
 						location = y;
 					} else if (action == MotionEvent.ACTION_UP) {
 						if ((y - location) > 10) {
-							if (agentWeb.getScrollY() < 5 && omnibox.getVisibility() == View.VISIBLE && omniboxBottom.getVisibility() == View.VISIBLE) {
-								omniboxBottom.setVisibility(View.GONE);
-								omnibox.setVisibility(View.GONE);
+							if (agentWeb.getScrollY() < 5) {
+							//	fab.hide();
 							} else {
-								omniboxBottom.setVisibility(View.VISIBLE);
-								omnibox.setVisibility(View.VISIBLE);
+								//fab.show();
 							}
 						} else if ((y - location) < -10) {
-							omniboxBottom.setVisibility(View.GONE);
-							omnibox.setVisibility(View.GONE);
+							//fab.hide();
 						}
 						location = 0;
 					}

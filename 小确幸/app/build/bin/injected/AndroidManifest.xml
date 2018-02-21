@@ -38,7 +38,6 @@
 			android:label="@string/app_name"
 			android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
 			android:windowSoftInputMode="adjustPan"
-			android:autoRemoveFromRecents="true"
 			android:hardwareAccelerated="true">
 
 			<intent-filter>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="vertical">
+
+	<ListView
+		android:id="@+id/layout_multi_list"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:dividerHeight="@null"
+		android:divider="@null"
+		android:layout_weight="1.0"/>
+
+	<Button
+		android:id="@+id/layout_multi_listButton"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"/>
+
+</LinearLayout>
+
