@@ -10,12 +10,13 @@ import android.net.http.*;
 import android.os.*;
 import android.preference.*;
 import android.support.design.widget.*;
+import android.support.v4.widget.*;
 import android.support.v7.app.*;
+import android.support.v7.widget.*;
 import android.text.*;
 import android.text.method.*;
 import android.view.*;
 import android.view.animation.*;
-import android.view.inputmethod.*;
 import android.webkit.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
@@ -27,11 +28,6 @@ import small.indeed.fortunate.View.*;
 
 import android.support.v7.app.AlertDialog;
 import android.text.ClipboardManager;
-import android.support.v4.widget.*;
-import small.indeed.fortunate.Activity.BrowserActivity.*;
-import android.util.*;
-import java.lang.reflect.*;
-import android.support.v7.widget.*;
 
 public class BrowserActivity extends AppCompatActivity {
 	
