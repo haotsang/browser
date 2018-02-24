@@ -9,6 +9,10 @@
 			android:summary="@string/setting_summary_search_engine_bing"
 			android:entries="@array/setting_entries_search_engine"
 			android:entryValues="@array/setting_values_search_engine"/>
+		<CheckBoxPreference
+			android:key="@string/sp_refresh"
+			android:defaultValue="false"
+			android:title="@string/setting_title_refresh"/>
     </PreferenceCategory>
 	
 </PreferenceScreen>

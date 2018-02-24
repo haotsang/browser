@@ -3,6 +3,7 @@
 <resources>
 	
 	<string name="sp_search_engine">SP_SEARCH_ENGINE_9</string>
+	<string name="sp_refresh">SP_REFRESH_9</string>
 	
 </resources>
 

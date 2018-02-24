@@ -40,6 +40,7 @@
     <string name="setting_summary_user_agent_default">默认</string>
     <string name="setting_summary_user_agent_desktop">桌面</string>
 	
+	<string name="setting_title_refresh">下拉刷新</string>
 </resources>
 
 

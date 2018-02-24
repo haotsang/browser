@@ -1,99 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/coordinatorLayout"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-	
-	<LinearLayout
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView_browse"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	<android.support.v4.widget.SwipeRefreshLayout
+		android:id="@+id/swip_refresh"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical">
-
-		<android.support.v4.widget.SwipeRefreshLayout
-			android:id="@+id/refresh"
-			android:layout_width="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		<small.indeed.fortunate.View.AgentWeb
+			android:id="@+id/page"
 			android:layout_height="match_parent"
-			android:layout_weight="1.0">
-
-			<small.indeed.fortunate.View.AgentWeb
-				android:id="@+id/page"
-				android:layout_height="match_parent"
-				android:layout_width="match_parent"/>
-
-		</android.support.v4.widget.SwipeRefreshLayout>
-
-		<RelativeLayout
-			android:id="@+id/main_omnibox"
-			android:layout_height="48dp"
-			android:layout_width="match_parent">
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:focusable="false"
-				android:focusableInTouchMode="false">
-				<FrameLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="1.0">
-					<TextView
-						android:gravity="center"
-						android:text="1"
-						android:textSize="12sp"
-						android:textColor="@android:color/black"
-						android:id="@+id/menu_task_count"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"/>
-					<android.support.v7.widget.AppCompatImageButton
-					android:id="@+id/main_omnibox_multi"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:src="@drawable/b6"
-					android:background="?android:attr/selectableItemBackground"/>
-				</FrameLayout>
-				<android.support.v7.widget.AppCompatAutoCompleteTextView
-					android:id="@+id/main_omnibox_inputbox"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="1.0"
-					android:gravity="center"
-					android:textSize="14sp"
-					android:singleLine="true"
-					android:selectAllOnFocus="true"
-					android:completionThreshold="1"
-					android:textCursorDrawable="@null"
-					android:background="?android:attr/selectableItemBackground"/>
-
-				<android.support.v7.widget.AppCompatImageButton
-					android:id="@+id/main_omnibox_overflow"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="1.0"
-					android:src="@drawable/ag"
-					android:background="?android:attr/selectableItemBackground"/>
-
-			</LinearLayout>
-
-			<ProgressBar
-				android:id="@+id/main_progress_bar"
-				android:layout_width="match_parent"
-				android:layout_height="3dp"
-				android:indeterminate="false"
-				android:indeterminateOnly="false"
-				android:progressDrawable="@drawable/progress_bar_layer_list"
-				style="?android:attr/progressBarStyleHorizontal"
-				android:visibility="gone"/>
-
-			<View
-				android:background="?android:attr/dividerVertical"
-				android:layout_height="1dp"
-				android:layout_width="match_parent"/>
-
-		</RelativeLayout>
-
-	</LinearLayout>
-
+			android:layout_width="match_parent"/>
+	</android.support.v4.widget.SwipeRefreshLayout>
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_action_menu"
+		android:tint="@color/accent"
+		app:backgroundTint="@android:color/white"
+		app:elevation="6dp"
+		app:pressedTranslationZ="12dp"
+		app:borderWidth="0dp"/>
 </android.support.design.widget.CoordinatorLayout>
-

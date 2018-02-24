@@ -1,6 +1,5 @@
 package small.indeed.fortunate.Activity;
 
-import android.animation.*;
 import android.app.*;
 import android.content.*;
 import android.content.pm.*;
@@ -8,7 +7,6 @@ import android.graphics.*;
 import android.net.*;
 import android.net.http.*;
 import android.os.*;
-import android.preference.*;
 import android.support.design.widget.*;
 import android.support.v4.widget.*;
 import android.support.v7.app.*;
@@ -16,11 +14,8 @@ import android.support.v7.widget.*;
 import android.text.*;
 import android.text.method.*;
 import android.view.*;
-import android.view.animation.*;
 import android.webkit.*;
 import android.widget.*;
-import android.widget.AdapterView.*;
-import android.widget.TextView.*;
 import java.util.*;
 import small.indeed.fortunate.*;
 import small.indeed.fortunate.Unit.*;
@@ -33,22 +28,14 @@ public class BrowserActivity extends AppCompatActivity {
 	
 	private CoordinatorLayout coordinatorLayout;
 	private SwipeRefreshLayout swipeRefreshLayout;
+	private FloatingActionButton fab;
 	private AgentWeb agentWeb;
-	private ProgressBar progressBar;
-	
-	private AppCompatAutoCompleteTextView inputBox;
-	private AppCompatImageButton omniboxMulti;
-	private AppCompatImageButton omniboxOverflow;
 	
 	private View customView;
     private VideoView videoView;
     private int originalOrientation;
     private WebChromeClient.CustomViewCallback customViewCallback;
 	private ValueCallback<Uri[]> filePathCallback = null;
-	
-	
-	private int[] icons = { R.drawable.ap, R.drawable.aw, R.drawable.a3, R.drawable.ay, R.drawable.a6, R.drawable.ax };
-	private String [] titles = { "刷新网页", "发至桌面", "源码", "分享", "下载", "设置" };
 	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -61,7 +48,7 @@ public class BrowserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-		initOmnibox();
+		init();
 		initWebView();
 	}
 	
@@ -86,22 +73,16 @@ public class BrowserActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		if (agentWeb.canGoBack()) {
 			agentWeb.goBack();
-		} else if (inputBox.hasFocus()) {
-			BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
 		} else {
 			super.onBackPressed();
 		}
 	}
 	
-	private void initOmnibox() {
-		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+	private void init() {
+		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.rootView_browse);
+		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swip_refresh);
 		agentWeb = (AgentWeb) findViewById(R.id.page);
-		progressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
-		
-		inputBox = (AppCompatAutoCompleteTextView) findViewById(R.id.main_omnibox_inputbox);
-		omniboxMulti = (AppCompatImageButton) findViewById(R.id.main_omnibox_multi);
-		omniboxOverflow = (AppCompatImageButton) findViewById(R.id.main_omnibox_overflow);
+		fab = (FloatingActionButton) findViewById(R.id.fab_menu);
 		
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
 			if (getIntent().getData() != null) {
@@ -114,7 +95,7 @@ public class BrowserActivity extends AppCompatActivity {
 				this.agentWeb.loadUrl(getIntent().getStringExtra("query"));
 			}
 		} else {
-			this.agentWeb.loadUrl("about:blank");
+			this.agentWeb.loadUrl(BrowserUnit.BASE_URL);
 		}
 		
 		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -123,11 +104,9 @@ public class BrowserActivity extends AppCompatActivity {
 					agentWeb.reload();
 				}
 			});
-        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_light,
-										  android.R.color.holo_red_light,
-										  android.R.color.holo_orange_light,
-										  android.R.color.holo_green_light);
-		
+		//swipeRefreshLayout.setDistanceToTriggerSync(ViewUnit.getWindowHeight(this)/3);
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
+										  
 		if (BrowserUnit.isURL(ClipboardUrl())) {
 			Snackbar.make(coordinatorLayout, ClipboardUrl(), Snackbar.LENGTH_SHORT).setAction("打开", new View.OnClickListener() {
 					@Override
@@ -136,166 +115,38 @@ public class BrowserActivity extends AppCompatActivity {
 					}
 				}).show();
 		}
-		
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(BrowserActivity.this, android.R.layout.simple_list_item_1, titles);
-		inputBox.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
-
-		inputBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					String query = inputBox.getText().toString().trim();
-
-					if (BrowserUnit.isURL(query)) {
-						agentWeb.loadUrl(query);
-					} else {
-						SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BrowserActivity.this);
-						int i = Integer.valueOf(sp.getString(getString(R.string.sp_search_engine), "0"));
-						if (i == 0) {
-							agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BING + query);
-						} else if (i == 1) {
-							agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BAIDU + query);
-						}
-					}
-					BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
-				}
-			});
-
-		inputBox.setOnEditorActionListener(new OnEditorActionListener() {
-				@Override
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-					String query = inputBox.getText().toString().trim();
-					if (query.isEmpty()) {
-						return true;
-					} else {
-						if (BrowserUnit.isURL(query)) {
-							agentWeb.loadUrl(query);
-						} else {
-							SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BrowserActivity.this);
-							int i = Integer.valueOf(sp.getString(getString(R.string.sp_search_engine), "0"));
-							if (i == 0) {
-								agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BING + query);
-							} else if (i == 1) {
-								agentWeb.loadUrl(BrowserUnit.SEARCH_ENGINE_BAIDU + query);
-							}
-						}
-						BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
-					}
-					return false;
-				}
-			});
-
-		inputBox.addTextChangedListener(new TextWatcher() {
-				@Override
-				public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
-				@Override
-				public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
-				@Override
-				public void afterTextChanged(Editable arg0) {
-					if (arg0.toString().equals("")) {
-						
-					} else {
-						
-					}
-				}}
-		);
-
-		inputBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-				@Override  
-				public void onFocusChange(View v, boolean hasFocus) {  
-					if (hasFocus) {//获得焦点
-						inputBox.showDropDown();
-					} else {//失去焦点
-						BrowserUnit.hideSoftInput(BrowserActivity.this, inputBox);
-					}  
-				}             
-			});
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-		omniboxMulti.setOnClickListener(new View.OnClickListener() {
+				
+		fab.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					final SheetDialog dialog = new SheetDialog(BrowserActivity.this);
-					View contentView = View.inflate(BrowserActivity.this, R.layout.activity_main, null);
+					final MyBottomSheetDialog dialog = new MyBottomSheetDialog(BrowserActivity.this);
+					View contentView = View.inflate(BrowserActivity.this, R.layout.layout_recycler, null);
+					final RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.my_recycler_view);
+					
+					recyclerView.setItemAnimator(new DefaultItemAnimator());
+					recyclerView.setLayoutManager(new LinearLayoutManager(BrowserActivity.this, LinearLayoutManager.VERTICAL, false));
+					
+					MyAdapter adapter = new MyAdapter(getData());
+					recyclerView.setAdapter(adapter);
+					
+				
+
 					dialog.setContentView(contentView);
 					dialog.show();
-				}
-			});
-			
-		omniboxOverflow.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (agentWeb.getProgress() == 100) {
-						showOverflow();
-					} else {
-						agentWeb.stopLoading();
-					}
 				}
 		});
 		
 	}
 	
-	private void showOverflow() {
-		final SheetDialog dialog = new SheetDialog(BrowserActivity.this);
-		View contentView = View.inflate(this, R.layout.grid_view, null);
-		GridView gridView = (GridView) contentView.findViewById(R.id.gridview);
-		MyGridAdapter adapter = new MyGridAdapter();
-		gridView.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-										int position, long id) {
-					dialog.dismiss();
-					switch (position) {
-						case 0:
-							agentWeb.reload();
-							break;
-						case 1:
-							try {
-								Intent shortcutIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
-								shortcutIntent.setData(Uri.parse(agentWeb.getUrl()));
-								shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);// 加入action,和category之后，程序卸载的时候才会主动将该快捷方式也卸载
+	private ArrayList<String> getData() {
+        ArrayList<String> data = new ArrayList<>();
+        String temp = " item";
+        for(int i = 0; i < 100; i++) {
+            data.add(i + temp);
+        }
 
-								Intent addIntent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-								addIntent.putExtra("duplicate", false);	// 不重复创建快捷方式图标
-								addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-								addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, agentWeb.getTitle());
-								addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, agentWeb.getFavicon());
-								sendBroadcast(addIntent);
-								Snackbar.make(coordinatorLayout, R.string.toast_successful, Snackbar.LENGTH_SHORT).show();
-							} catch (Exception e) {
-								Snackbar.make(coordinatorLayout, R.string.toast_failed, Snackbar.LENGTH_SHORT).show();
-							}
-							break;
-						case 2:
-							agentWeb.loadUrl("javascript:alert(document.getElementsByTagName('html')[0].innerHTML);");
-							break;
-						case 3:
-							try {
-								IntentUnit.share(BrowserActivity.this, agentWeb.getUrl());
-							} catch (Exception e) {}
-							break;
-						case 4:
-							//通过包名启动应用
-							try { 
-								Intent i = getPackageManager().getLaunchIntentForPackage("com.dv.adm.pay");
-								startActivity(i);
-							} catch (Exception e) { 
-								Intent i = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
-								startActivity(i); 
-							}
-							break;
-						case 5:
-							startActivity(new Intent(BrowserActivity.this, SettingActivity.class));
-							break;
-						default:
-							break;
-					}
-				}
-			});
-			dialog.setContentView(contentView);
-			dialog.show();
-	}
+        return data;
+    }
 	
 	private String ClipboardUrl() {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService("clipboard");
@@ -440,56 +291,18 @@ public class BrowserActivity extends AppCompatActivity {
 
 		agentWeb.setWebChromeClient(new WebChromeClient() {
 				@Override
-				public void onProgressChanged(WebView view, int newProgress) {
-					super.onProgressChanged(view, newProgress);
-					if(newProgress == 100) {
+				public void onProgressChanged(WebView view, int progress) {
+					super.onProgressChanged(view, progress);
+					if (progress == 100) {
 						swipeRefreshLayout.setRefreshing(false);
 					} else if (!swipeRefreshLayout.isRefreshing()) {
 						swipeRefreshLayout.setRefreshing(true);
-					}
-					//			        //平滑的加载进度
-					if (newProgress < 2) {
-						progressBar.setProgress(2);
-					} else if (newProgress > progressBar.getProgress()) {
-						ObjectAnimator animator = ObjectAnimator.ofInt(progressBar, "progress", newProgress);
-						//animator.setStartDelay(getResources().getInteger(android.R.integer.config_longAnimTime));
-						animator.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
-						animator.setInterpolator(new DecelerateInterpolator());
-						animator.start();
-					} else {
-						progressBar.setProgress(newProgress);
-					}
-
-					if (newProgress == 100) {
-						//进度条优雅的退场
-						ObjectAnimator outAni = ObjectAnimator.ofFloat(progressBar, "alpha", 1, 0);
-						outAni.setStartDelay(getResources().getInteger(android.R.integer.config_longAnimTime));
-						outAni.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
-						outAni.addListener(new Animator.AnimatorListener() {
-								@Override
-								public void onAnimationStart(Animator animation) {}
-								@Override
-								public void onAnimationEnd(Animator animation) {
-									omniboxOverflow.setImageResource(R.drawable.ag);
-									progressBar.setVisibility(View.GONE);
-									progressBar.setAlpha(1);
-								}
-								@Override
-								public void onAnimationCancel(Animator animation) {}
-								@Override
-								public void onAnimationRepeat(Animator animation) {}
-							});
-						outAni.start();
-					} else {
-						//进度条加载时始终使其可见
-						omniboxOverflow.setImageResource(R.drawable.a2);
-						progressBar.setVisibility(View.VISIBLE);
 					}
 				}
 				@Override
 				public void onReceivedTitle(WebView view, String title) {
 					super.onReceivedTitle(view, title);
-					inputBox.setText(title.toString().length() == 0 ? view.getUrl() : title);
+					//inputBox.setText(title.toString().length() == 0 ? view.getUrl() : title);
 				}
 				@Override
 				public void onReceivedIcon(WebView view, Bitmap icon) {
@@ -707,14 +520,14 @@ public class BrowserActivity extends AppCompatActivity {
 					if (action == MotionEvent.ACTION_DOWN) {
 						location = y;
 					} else if (action == MotionEvent.ACTION_UP) {
-						if ((y - location) > 10) {
-							if (agentWeb.getScrollY() < 5) {
-							//	fab.hide();
+						if ((y - location) > 20) {
+							if (agentWeb.getScrollY() < 5 && fab.isShown()) {
+								fab.hide();
 							} else {
-								//fab.show();
+								fab.show();
 							}
-						} else if ((y - location) < -10) {
-							//fab.hide();
+						} else if ((y - location) < -20) {
+							fab.hide();
 						}
 						location = 0;
 					}
@@ -726,28 +539,48 @@ public class BrowserActivity extends AppCompatActivity {
 			
 	}
 	
-	protected class MyGridAdapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return titles.length;
-        }
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = View.inflate(BrowserActivity.this, R.layout.grid_item, null);
-            TextView title =  (TextView) view.findViewById(R.id.text);
-			ImageView imageView = (ImageView) view.findViewById(R.id.image);
-            title.setText(titles[position]);
-			imageView.setImageResource(icons[position]);//将图片更换
+	public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
-            return view;
-        }
+		private ArrayList<String> mData;
+
+		public MyAdapter(ArrayList<String> data) {
+			this.mData = data;
+		}
+
+		public void updateData(ArrayList<String> data) {
+			this.mData = data;
+			notifyDataSetChanged();
+		}
+
+		@Override
+		public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			// 实例化展示的view
+			View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent, false);
+			// 实例化viewholder
+			ViewHolder viewHolder = new ViewHolder(v);
+			return viewHolder;
+		}
+
+		@Override
+		public void onBindViewHolder(ViewHolder holder, int position) {
+			// 绑定数据
+			holder.mTv.setText(mData.get(position));
+		}
+
+		@Override
+		public int getItemCount() {
+			return mData == null ? 0 : mData.size();
+		}
+
+		public class ViewHolder extends RecyclerView.ViewHolder {
+
+			TextView mTv;
+
+			public ViewHolder(View itemView) {
+				super(itemView);
+				mTv = (TextView) itemView.findViewById(R.id.item_tv);
+			}
+		}
 	}
+	
 }

@@ -23,7 +23,7 @@ public class BrowserUnit {
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
     public static final String MIME_TYPE_IMAGE = "image/*";
 
-	public static final String BASE_URL = "file:///android_asset/homepage.html";
+	public static final String BASE_URL = "file:///android_asset/index.html";
     public static final String BOOKMARK_TYPE = "<DT><A HREF=\"{url}\" ADD_DATE=\"{time}\">{title}</A>";
     public static final String BOOKMARK_TITLE = "{title}";
     public static final String BOOKMARK_URL = "{url}";
@@ -121,6 +121,25 @@ public class BrowserUnit {
         }
     }
 
+	/**
+     * 判断相对应的APP是否存在
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public boolean isAvilible(Context context, String packageName) {
+        PackageManager packageManager = context.getPackageManager();
+
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        for (int i = 0; i < pinfo.size(); i++) {
+            if (((PackageInfo) pinfo.get(i)).packageName
+				.equalsIgnoreCase(packageName))
+                return true;
+        }
+        return false;
+    }
+	
 	public static boolean hasApp(Context context, String packgename) {
 		PackageInfo packageInfo;
 		try {
