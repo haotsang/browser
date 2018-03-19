@@ -7,7 +7,9 @@ import android.graphics.*;
 import android.net.*;
 import android.net.http.*;
 import android.os.*;
+import android.support.design.*;
 import android.support.design.widget.*;
+import android.support.v4.view.*;
 import android.support.v4.widget.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
@@ -17,7 +19,6 @@ import android.view.*;
 import android.webkit.*;
 import android.widget.*;
 import java.util.*;
-import small.indeed.fortunate.*;
 import small.indeed.fortunate.Unit.*;
 import small.indeed.fortunate.View.*;
 
@@ -27,8 +28,9 @@ import android.text.ClipboardManager;
 public class BrowserActivity extends AppCompatActivity {
 	
 	private CoordinatorLayout coordinatorLayout;
+	private NavigationView navigationView;
+	private DrawerLayout drawer;
 	private SwipeRefreshLayout swipeRefreshLayout;
-	private FloatingActionButton fab;
 	private AgentWeb agentWeb;
 	
 	private View customView;
@@ -50,7 +52,7 @@ public class BrowserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 		init();
 		initWebView();
-	}
+    }
 	
 	@Override
     protected void onDestroy() {
@@ -71,7 +73,9 @@ public class BrowserActivity extends AppCompatActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if (agentWeb.canGoBack()) {
+		if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (agentWeb.canGoBack()) {
 			agentWeb.goBack();
 		} else {
 			super.onBackPressed();
@@ -79,10 +83,13 @@ public class BrowserActivity extends AppCompatActivity {
 	}
 	
 	private void init() {
+		
+		
 		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.rootView_browse);
+		navigationView = (NavigationView) findViewById(R.id.navigation_view);
+		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swip_refresh);
 		agentWeb = (AgentWeb) findViewById(R.id.page);
-		fab = (FloatingActionButton) findViewById(R.id.fab_menu);
 		
 		if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
 			if (getIntent().getData() != null) {
@@ -95,8 +102,63 @@ public class BrowserActivity extends AppCompatActivity {
 				this.agentWeb.loadUrl(getIntent().getStringExtra("query"));
 			}
 		} else {
-			this.agentWeb.loadUrl(BrowserUnit.BASE_URL);
+			this.agentWeb.loadUrl("http://m.sogou.com");
 		}
+		
+		navigationView.setItemIconTintList(null);
+		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+				@Override
+				public boolean onNavigationItemSelected(final MenuItem item) {
+					drawer.closeDrawer(GravityCompat.START);
+					new Handler().postDelayed(new Runnable() { 
+							@Override
+							public void run() { 
+								switch (item.getItemId()) {
+									case R.id.nav_new_tab:
+										Intent intent = new Intent(BrowserActivity.this, BrowserActivity.class);
+										intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+										startActivity(intent, ActivityOptions.makeBasic().toBundle());
+										break;
+									case R.id.nav_incognito:
+
+										break;
+									case R.id.nav_share:
+										try {
+											IntentUnit.share(BrowserActivity.this, agentWeb.getUrl());
+										} catch (Exception e) {}
+										break;
+									case R.id.nav_desktop:
+
+										break;
+									case R.id.nav_shortcut:
+										try {
+											Intent shortcutIntent = new Intent(BrowserActivity.this, BrowserActivity.class);
+											shortcutIntent.setData(Uri.parse(agentWeb.getUrl()));
+											shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);// 加入action,和category之后，程序卸载的时候才会主动将该快捷方式也卸载
+
+											Intent addIntent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+											addIntent.putExtra("duplicate", false);	// 不重复创建快捷方式图标
+											addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+											addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, agentWeb.getTitle());
+											addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, agentWeb.getFavicon());
+											sendBroadcast(addIntent);
+											Snackbar.make(coordinatorLayout, R.string.toast_successful, Snackbar.LENGTH_SHORT).show();
+										} catch (Exception e) {
+											Snackbar.make(coordinatorLayout, R.string.toast_failed, Snackbar.LENGTH_SHORT).show();
+										}
+										break;
+									case R.id.nav_settings:
+										startActivity(new Intent(BrowserActivity.this, SettingActivity.class));
+										break;
+									default:
+										break;
+								}
+							}
+						}, 500);
+
+					return true;
+				}
+			});
 		
 		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 				@Override
@@ -116,37 +178,7 @@ public class BrowserActivity extends AppCompatActivity {
 				}).show();
 		}
 				
-		fab.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					final MyBottomSheetDialog dialog = new MyBottomSheetDialog(BrowserActivity.this);
-					View contentView = View.inflate(BrowserActivity.this, R.layout.layout_recycler, null);
-					final RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.my_recycler_view);
-					
-					recyclerView.setItemAnimator(new DefaultItemAnimator());
-					recyclerView.setLayoutManager(new LinearLayoutManager(BrowserActivity.this, LinearLayoutManager.VERTICAL, false));
-					
-					MyAdapter adapter = new MyAdapter(getData());
-					recyclerView.setAdapter(adapter);
-					
-				
-
-					dialog.setContentView(contentView);
-					dialog.show();
-				}
-		});
-		
 	}
-	
-	private ArrayList<String> getData() {
-        ArrayList<String> data = new ArrayList<>();
-        String temp = " item";
-        for(int i = 0; i < 100; i++) {
-            data.add(i + temp);
-        }
-
-        return data;
-    }
 	
 	private String ClipboardUrl() {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService("clipboard");
@@ -302,7 +334,7 @@ public class BrowserActivity extends AppCompatActivity {
 				@Override
 				public void onReceivedTitle(WebView view, String title) {
 					super.onReceivedTitle(view, title);
-					//inputBox.setText(title.toString().length() == 0 ? view.getUrl() : title);
+					//toolBar.setTitle(title.toString().length() == 0 ? view.getUrl() : title);
 				}
 				@Override
 				public void onReceivedIcon(WebView view, Bitmap icon) {
@@ -505,82 +537,7 @@ public class BrowserActivity extends AppCompatActivity {
 					return false;
 				}
 			});
-			
-		agentWeb.setOnTouchListener(new View.OnTouchListener() {
-				float location = 0;
-				float y = 0;
-				int action = 0;
-				@Override
-				public boolean onTouch(View view, MotionEvent arg1) {
-					if (view != null && !view.hasFocus()) {
-						view.requestFocus();
-					}
-					action = arg1.getAction();
-					y = arg1.getY();
-					if (action == MotionEvent.ACTION_DOWN) {
-						location = y;
-					} else if (action == MotionEvent.ACTION_UP) {
-						if ((y - location) > 20) {
-							if (agentWeb.getScrollY() < 5 && fab.isShown()) {
-								fab.hide();
-							} else {
-								fab.show();
-							}
-						} else if ((y - location) < -20) {
-							fab.hide();
-						}
-						location = 0;
-					}
-
-					return false;
-				}
-
-			});
-			
-	}
-	
-	public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
-
-		private ArrayList<String> mData;
-
-		public MyAdapter(ArrayList<String> data) {
-			this.mData = data;
-		}
-
-		public void updateData(ArrayList<String> data) {
-			this.mData = data;
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-			// 实例化展示的view
-			View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent, false);
-			// 实例化viewholder
-			ViewHolder viewHolder = new ViewHolder(v);
-			return viewHolder;
-		}
-
-		@Override
-		public void onBindViewHolder(ViewHolder holder, int position) {
-			// 绑定数据
-			holder.mTv.setText(mData.get(position));
-		}
-
-		@Override
-		public int getItemCount() {
-			return mData == null ? 0 : mData.size();
-		}
-
-		public class ViewHolder extends RecyclerView.ViewHolder {
-
-			TextView mTv;
-
-			public ViewHolder(View itemView) {
-				super(itemView);
-				mTv = (TextView) itemView.findViewById(R.id.item_tv);
-			}
-		}
+		
 	}
 	
 }

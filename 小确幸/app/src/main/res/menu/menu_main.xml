@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+		<item
+            android:id="@+id/nav_new_tab"
+            android:title="新建标签页"
+            android:icon="@drawable/ic_new_tab"/>
+        <item
+            android:id="@+id/nav_incognito"
+            android:title="新建无痕浏览"
+            android:icon="@drawable/ic_incognito"/>
+    </group>
+	<group android:checkableBehavior="none"
+		android:id="@+id/group_bh">
+		<item
+            android:id="@+id/nav_new_tab"
+            android:title="书签列表"
+            android:icon="@drawable/ic_new_tab"/>
+        <item
+            android:id="@+id/nav_incognito"
+            android:title="历史记录"
+            android:icon="@drawable/ic_incognito"/>
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/group_manage">
+
+        <item
+            android:id="@+id/nav_share"
+            android:title="分享链接"
+            android:icon="@drawable/ic_share"/>
+        <item
+            android:id="@+id/nav_desktop"
+            android:title="桌面模式"
+            android:icon="@drawable/ic_desktop"/>
+        
+        <item
+            android:id="@+id/nav_shortcut"
+            android:title="添加快捷方式"
+            android:icon="@drawable/ic_shortcut"/>
+    </group>
+	<group
+		android:checkableBehavior="none"
+		android:id="@+id/group_settings">
+		
+		<item
+            android:id="@+id/nav_settings"
+            android:title="设置"
+            android:icon="@drawable/ic_settings"/>
+	</group>
+</menu>
+
