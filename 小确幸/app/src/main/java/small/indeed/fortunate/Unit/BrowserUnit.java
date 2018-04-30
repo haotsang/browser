@@ -3,8 +3,12 @@ package small.indeed.fortunate.Unit;
 import android.app.*;
 import android.content.*;
 import android.content.pm.*;
+import android.graphics.*;
+import android.graphics.Bitmap.*;
+import android.graphics.drawable.*;
 import android.net.*;
 import android.os.*;
+import android.util.*;
 import android.view.*;
 import android.view.inputmethod.*;
 import android.webkit.*;
@@ -49,6 +53,67 @@ public class BrowserUnit {
     public static final String URL_SCHEME_HTTPS = "https://";
     public static final String URL_SCHEME_INTENT = "intent://";
 	
+	public static void setStatusBarColor(Activity activity, WebView view) {
+		if(Build.VERSION.SDK_INT >= 21) {
+			Bitmap var1 = BrowserUnit.getBitmapFromView(view);
+			if(var1 != null) {
+				int var2 = var1.getPixel(activity.getWindowManager().getDefaultDisplay().getWidth() / 2, 10);
+				int var3 = Color.red(var2);
+				int var4 = Color.green(var2);
+				int var5 = Color.blue(var2);
+				if(Build.VERSION.SDK_INT >= 23) {
+					if(var3 > 200 && var4 > 200 && var5 > 200) {
+						activity.getWindow().getDecorView().setSystemUiVisibility(8192);
+					} else {
+						activity.getWindow().getDecorView().setSystemUiVisibility(0);
+					}
+				}
+				BrowserUnit.setWindowStatusBarColor(activity, var2);
+				var1.recycle();
+			}
+		}
+	}
+	
+	public static void setWindowStatusBarColor(Activity activity, int var1) {
+		try {
+			if(Build.VERSION.SDK_INT >= 21) {
+				Window var3 = activity.getWindow();
+				var3.addFlags(Integer.MIN_VALUE);
+				var3.setStatusBarColor(var1);
+			}
+		} catch (Exception var4) {
+			var4.printStackTrace();
+		}
+	}
+	
+	//状态栏变色
+	public static Bitmap getBitmapFromView(View var1) {
+		Bitmap var2 = Bitmap.createBitmap(var1.getWidth(), var1.getHeight(), Config.RGB_565);
+		Canvas var3 = new Canvas(var2);
+		var1.layout(var1.getLeft(), var1.getTop(), var1.getRight(), var1.getBottom());
+		Drawable var4 = var1.getBackground();
+		if(var4 != null) {
+			var4.draw(var3);
+		} else {
+			var3.drawColor(-1);
+		}
+		var1.draw(var3);
+		return var2;
+	}
+	
+	public static String HtmlText(String var0) {
+		String var1 = var0.replaceAll("<title>[^>]*</title>", "");
+
+		try {
+			String var3 = Pattern.compile("<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>", 2).matcher(var1).replaceAll("");
+			String var4 = Pattern.compile("<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>", 2).matcher(var3).replaceAll("");
+			String var5 = Pattern.compile("<[^>]+>", 2).matcher(var4).replaceAll("");
+			return var5;
+		} catch (Exception var6) {
+			return var1;
+		}
+	}
+	
     public static boolean isURL(String url) {
         if (url == null) {
             return false;
@@ -75,6 +140,45 @@ public class BrowserUnit {
         return pattern.matcher(url).matches();
     }
 	
+	public static void hideSoftInput(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        ((InputMethodManager) activity.getSystemService("input_method")).hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    // toogle输入法  
+    public static void hidenOrShowInputMethod(View view,Context context) {  
+
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getApplicationContext()  
+			.getSystemService(Context.INPUT_METHOD_SERVICE);  
+        // 进行取反  
+        inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(),  
+													 InputMethodManager.SHOW_FORCED,  
+													 InputMethodManager.HIDE_NOT_ALWAYS);  
+    }  
+    // 显示输入法  
+    public static void showInputMethod(View view,Context context) {  
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getApplicationContext()  
+			.getSystemService(Context.INPUT_METHOD_SERVICE);  
+        //同时再使用该方法之前，view需要获得焦点，可以通过requestFocus()方法来设定。  
+        view.requestFocus();  
+        inputMethodManager.showSoftInput(view, inputMethodManager.SHOW_FORCED);  
+    }  
+    //隐藏输入法  
+    public static void hidenInputMethod(View view,Context context) {  
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getApplicationContext()  
+			.getSystemService(Context.INPUT_METHOD_SERVICE);  
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),  
+												   InputMethodManager.HIDE_NOT_ALWAYS);  
+    }  
+    //判断输入法是否已经打开  
+    public static boolean isInputMethodOpened(Context context){  
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getApplicationContext()  
+			.getSystemService(Context.INPUT_METHOD_SERVICE);  
+        return inputMethodManager.isActive();  
+    }  
+	
 	public static void showSoftInput(Context context, View view) {
         view.requestFocus();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -90,7 +194,7 @@ public class BrowserUnit {
 	public static void copyURL(Context context, String url) {
         ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData data = ClipData.newPlainText(null, url.trim());
-        manager.setPrimaryClip(data);
+       	manager.setPrimaryClip(data);
         ToastUtil.show(context, R.string.toast_copy_link_successfully);
     }
 

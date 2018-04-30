@@ -20,7 +20,6 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:palette-v7:+'
 	compile 'com.android.support:design:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

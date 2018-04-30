@@ -2,36 +2,134 @@
 <android.support.design.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/rootView_browse"
+	android:id="@+id/main_framelayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawer_layout"
+
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:fitsSystemWindows="true">
-			
-			<android.support.v4.widget.SwipeRefreshLayout
-				android:id="@+id/swip_refresh"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		android:orientation="vertical">
 
-				<small.indeed.fortunate.View.AgentWeb
-					android:id="@+id/page"
-					android:layout_height="match_parent"
-					android:layout_width="match_parent"/>
-
-			</android.support.v4.widget.SwipeRefreshLayout>
-		<android.support.design.widget.NavigationView
-			android:id="@+id/navigation_view"
-			android:layout_width="wrap_content"
+		<FrameLayout
+			android:id="@+id/main_content"
 			android:layout_height="match_parent"
-			android:layout_gravity="start"
-			android:fitsSystemWindows="true"
-			app:headerLayout="@layout/nav_header_layout"
-			app:menu="@menu/menu_main"/>
-	</android.support.v4.widget.DrawerLayout>
-	
+			android:layout_width="match_parent"
+			android:layout_weight="1.0"/>
+
+		<RelativeLayout
+			android:id="@+id/main_omnibox"
+			android:layout_height="52dp"
+			android:layout_width="match_parent">
+
+			<LinearLayout
+				android:layout_height="match_parent"
+				android:layout_width="match_parent">
+
+				<LinearLayout
+					android:layout_height="match_parent"
+					android:layout_width="match_parent"
+					android:layout_weight="1.0"
+					android:layout_marginRight="10dp"
+					android:layout_marginLeft="10dp"
+					android:background="@drawable/background"
+					android:layout_marginBottom="4dp"
+					android:layout_marginTop="4dp">
+
+					<ImageButton
+						android:id="@+id/main_omnibox_safe"
+						android:layout_height="match_parent"
+						android:layout_width="wrap_content"
+						android:src="@drawable/pageinfo_good"
+						android:background="?android:attr/selectableItemBackgroundBorderless"
+						android:layout_marginLeft="6dp"/>
+
+					<TextView
+						android:id="@+id/main_omnibox_url"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_weight="1.0"
+						android:singleLine="true"
+						android:textColor="@android:color/black"
+						android:textSize="14sp"
+						android:layout_marginLeft="6dp"
+						android:layout_marginRight="6dp"
+						android:gravity="center_vertical"/>
+
+					<ImageButton
+						android:id="@+id/main_omnibox_reload"
+						android:layout_height="match_parent"
+						android:layout_width="wrap_content"
+						android:src="@drawable/ic_reload"
+						android:background="?android:attr/selectableItemBackgroundBorderless"
+						android:layout_marginRight="6dp"/>
+
+				</LinearLayout>
+
+				<FrameLayout
+					android:layout_height="match_parent"
+					android:layout_width="wrap_content"
+					android:layout_marginRight="6dp"
+					android:layout_marginLeft="6dp">
+
+					<ImageButton
+						android:id="@+id/main_omnibox_tabswitcher"
+						android:layout_height="match_parent"
+						android:layout_width="wrap_content"
+						android:src="@drawable/ic_tabswitcher"
+						android:background="?android:attr/selectableItemBackgroundBorderless"
+						android:alpha="0.6"/>
+
+					<TextView
+						android:layout_height="match_parent"
+						android:layout_width="match_parent"
+						android:text="1"
+						android:textColor="#ff000000"
+						android:gravity="center"
+						android:alpha="0.6"
+						android:textSize="12sp"
+						android:textStyle="bold"/>
+
+				</FrameLayout>
+
+				<ImageButton
+					android:id="@+id/main_omnibox_overflow"
+					android:layout_height="match_parent"
+					android:layout_width="wrap_content"
+					android:src="@drawable/ic_menu"
+					android:background="?android:attr/selectableItemBackgroundBorderless"
+					android:layout_marginRight="12dp"
+					android:layout_marginLeft="6dp"/>
+
+			</LinearLayout>
+
+			<View
+				android:background="?android:attr/dividerVertical"
+				android:layout_height="1dp"
+				android:layout_width="match_parent"/>
+
+			<ProgressBar
+				android:id="@+id/main_progress_bar"
+				android:layout_height="2.5dp"
+				android:layout_width="match_parent"
+				android:indeterminate="false"
+				android:indeterminateOnly="false"
+				android:progressDrawable="@drawable/progress_bar_layer_list"
+				style="?android:attr/progressBarStyleHorizontal"
+				android:visibility="gone"/>
+
+		</RelativeLayout>
+
+		
+		<small.indeed.fortunate.View.FinderBar
+			android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
+			android:id="@+id/finder_bar"
+			android:visibility="gone"
+			android:layout_width="match_parent"
+			android:layout_height="52dp" />
+		
+		
+	</LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>
 

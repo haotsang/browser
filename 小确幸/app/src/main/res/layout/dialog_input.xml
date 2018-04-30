@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent">
+
+	<LinearLayout
+		android:layout_height="54dp"
+		android:layout_width="match_parent">
+
+		<small.indeed.fortunate.View.EditTextExt
+			android:id="@+id/sheet_dialog_inputbox"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:layout_weight="1.0"
+			android:singleLine="true"
+			android:textSize="16sp"
+			android:selectAllOnFocus="true"
+			android:imeOptions="actionDone"
+			android:textCursorDrawable="@null"
+			android:inputType="textNoSuggestions|textWebEditText"
+			android:background="@null"
+			android:layout_marginLeft="12dp"
+			android:layout_marginRight="12dp"
+			/>
+
+		<ImageButton
+			android:id="@+id/sheet_dialog_inputclear"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:src="@drawable/btn_delete_24dp"
+			android:background="@null"
+			android:visibility="gone"
+			android:layout_marginRight="12dp"
+			android:alpha="0.6"
+			/>
+
+	</LinearLayout>
+
+</FrameLayout>
+

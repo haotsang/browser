@@ -3,6 +3,7 @@ package small.indeed.fortunate.View;
 import android.content.*;
 import android.util.*;
 import android.webkit.*;
+import android.view.*;
 
 public class AgentWeb extends WebView {
 
@@ -66,6 +67,25 @@ public class AgentWeb extends WebView {
         getSettings().setMixedContentMode(0);
         getSettings().setUserAgentString(getSettings().getUserAgentString());
     }
+	
+	public static void destroyWebView(WebView view) {
+		if (view != null) {
+            view.clearHistory();
+			view.clearCache(true);
+			view.clearSslPreferences();
+			view.setWebViewClient(null);
+			view.setWebChromeClient(null);
+			view.loadDataWithBaseURL(null, "", "text/html", "UTF-8", null);
+
+            ((ViewGroup) view.getParent()).removeView(view);
+			view.removeAllViews();
+			view.freeMemory();
+			view.pauseTimers();
+			view.destroy();
+            view = null;
+        }
+    }
+	
 
 	public void pause() {
         onPause();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name"></string>
+    <string name="app_name">妙啊</string>
 	
 	<!--Toast-->
 	<string name="toast_successful">成功</string>
@@ -25,12 +25,16 @@
     <string name="dialog_sign_in_password">密码</string>
 	
 	<string name="dialog_longpress_copy_link">复制链接</string>
-	<string name="dialog_longpress_save_img">保存图片</string>
-	<string name="dialog_longpress_new_tab">新标签页打开</string>
+	<string name="dialog_longpress_save_img">保存到相册</string>
+	<string name="dialog_longpress_find_img">搜索此图片</string>
+	<string name="dialog_longpress_new_tab">新页面打开</string>
 	<string name="dialog_longpress_new_tab_in_background">新标签页在后台打开</string>
 	
 	<!-- Browser setting -->
     <string name="setting_title_browser">浏览设置</string>
+	
+	<string name="setting_title_no_ad">广告拦截</string>
+	<string name="setting_summary_no_ad">如果浏览网页遇到显示问题可以尝试关闭</string>
 	<!-- Search engine -->
 	<string name="setting_title_search_engine">搜索引擎</string>
 	<string name="setting_summary_search_engine_bing">必应</string>
@@ -40,7 +44,7 @@
     <string name="setting_summary_user_agent_default">默认</string>
     <string name="setting_summary_user_agent_desktop">桌面</string>
 	
-	<string name="setting_title_refresh">下拉刷新</string>
+	<string name="setting_title_browse_cache">删除浏览缓存</string>
 </resources>
 
 

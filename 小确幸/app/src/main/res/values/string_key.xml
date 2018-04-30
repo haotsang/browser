@@ -2,8 +2,9 @@
 
 <resources>
 	
+	<string name="sp_no_ad">SP_NO_AD_9</string>
 	<string name="sp_search_engine">SP_SEARCH_ENGINE_9</string>
-	<string name="sp_refresh">SP_REFRESH_9</string>
+	<string name="sp_browse_cache">SP_BROWSE_CACHE_9</string>
 	
 </resources>
 

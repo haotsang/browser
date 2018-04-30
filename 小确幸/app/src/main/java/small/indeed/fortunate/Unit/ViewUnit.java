@@ -4,23 +4,11 @@ import android.content.*;
 import android.graphics.*;
 import android.graphics.drawable.*;
 import android.os.*;
-import android.support.v4.content.*;
 import android.support.v4.graphics.*;
-import android.support.v7.graphics.*;
 import android.util.*;
+import android.app.*;
 
 public class ViewUnit {
-	
-	public static boolean isColorLight(int color) {
-        float[] hsl = new float[3];
-        ColorUtils.RGBToHSL(Color.red(color), Color.green(color), Color.blue(color), hsl);
-        return hsl[2] > 0.5f;
-    }
-	
-	public static int getColor(Context context, Bitmap bitmap, boolean incognito) {
-        Palette palette = Palette.from(bitmap).generate();
-        return incognito ? palette.getMutedColor(ContextCompat.getColor(context, 2131296333)) : palette.getVibrantColor(ContextCompat.getColor(context, 2131296330));
-    }
 	
 	public static float dp2px(Context context, float dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -47,4 +35,8 @@ public class ViewUnit {
         return context.getResources().getDisplayMetrics().widthPixels;
     }
 
+	public static int getStatusBarHeight(Activity activity) {
+        return activity.getResources().getDimensionPixelOffset(activity.getResources().getIdentifier("status_bar_height", "dimen", "android"));
+    }
+	
 }

@@ -1,10 +1,19 @@
 package small.indeed.fortunate.View;
 
-import android.content.*;
-import android.os.*;
-import android.support.annotation.*;
-import android.support.design.widget.*;
-import android.view.*;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Rect;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
+import android.support.design.widget.BottomSheetDialog;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 /**
  * Created by ZhangChao on 2016/12/27.
@@ -36,5 +45,5 @@ public class MyBottomSheetDialog extends BottomSheetDialog {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int height = wm.getDefaultDisplay().getHeight();
         return height;
-    }
+	}
 }

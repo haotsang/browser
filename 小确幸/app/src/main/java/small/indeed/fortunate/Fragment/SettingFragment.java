@@ -8,16 +8,14 @@ import small.indeed.fortunate.*;
 public class SettingFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 	
 	private ListPreference searchEngine;
-	
 	private String[] seEntries;
-	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_settings);
     }
-
+	
     @Override
     public void onResume() {
         super.onResume();
@@ -50,5 +48,4 @@ public class SettingFragment extends PreferenceFragment implements SharedPrefere
             searchEngine.setSummary(summary);
 		} 
 	}
-
 }

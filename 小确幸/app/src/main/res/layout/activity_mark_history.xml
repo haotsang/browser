@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	
+    <android.support.v7.widget.RecyclerView
+		android:id="@+id/recyclerView_mark_history"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+	
+    <TextView
+		android:id="@+id/emptyView_mark_history"
+        android:textSize="16sp"
+        android:textColor="#FF666666"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="当前没有任何记录"
+        android:lineSpacingExtra="10dp" />
+	
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab_mark_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_stop"
+		android:tint="@color/accent"
+		app:fabSize="normal"
+		app:rippleColor="@android:color/darker_gray"
+		app:backgroundTint="@android:color/white"
+		app:elevation="6dp"
+		app:pressedTranslationZ="12dp"
+		app:borderWidth="0dp"/>
+	
+</android.support.design.widget.CoordinatorLayout>
+
