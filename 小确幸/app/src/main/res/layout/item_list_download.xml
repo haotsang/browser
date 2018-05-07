@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight="1">
+
+		<ProgressBar
+			android:id="@+id/progressBar"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:indeterminate="false"
+			android:indeterminateOnly="false"
+			android:progressDrawable="@drawable/progress_bar_layer_list"
+			style="?android:attr/progressBarStyleHorizontal"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_weight="1">
+
+				<TextView
+					android:textSize="16sp"
+					android:textStyle="bold"
+					android:id="@+id/url"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:singleLine="true"
+					android:layout_weight="1"/>
+
+				<TextView
+					android:id="@+id/textView_total"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:text="下载进度"
+					android:layout_weight="1"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="60dp"
+				android:layout_height="match_parent">
+
+				<Button
+					android:textSize="12sp"
+					android:id="@+id/button_start"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:text="开始"
+					android:layout_weight="1"/>
+
+				<Button
+					android:textSize="12sp"
+					android:id="@+id/button_pause"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:text="暂停"
+					android:layout_weight="1"/>
+
+				<Button
+					android:textSize="12sp"
+					android:id="@+id/button_resume"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:text="继续"
+					android:layout_weight="1"/>
+
+				<Button
+					android:textSize="12sp"
+					android:id="@+id/button_delete"
+					android:layout_width="0dp"
+					android:layout_height="match_parent"
+					android:text="删除"
+					android:layout_weight="1"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</FrameLayout>
+
+</LinearLayout>
+

@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+	
+	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+		<item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_dark_color</item>
 		<item name="colorAccent">@color/accent</item>
 	</style>
 	
-	<style name="full_dialog_background" parent="@style/Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@android:color/white</item>
-	</style>
-	
-	<style name="PopupAnimation" parent="android:Animation"             mce_bogus="1">
-        <item name="android:windowEnterAnimation">@anim/anim_in</item>
-        <item name="android:windowExitAnimation">@anim/anim_out</item>
-    </style>
+	<style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar"/>
 	
 </resources>

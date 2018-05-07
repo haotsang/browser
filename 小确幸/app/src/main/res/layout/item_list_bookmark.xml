@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/setting_layout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<TextView
+		android:id="@+id/website_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="6dp"
+		android:layout_marginTop="6dp"
+		android:singleLine="true"
+		android:text="website"
+		android:textColor="#FF181818"/>
+
+	<TextView
+		android:id="@+id/website_url"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="6dp"
+		android:layout_marginBottom="6dp"
+		android:singleLine="true"
+		android:text="URL"
+		android:textColor="#FF404040"/>
+
+</LinearLayout>
+

@@ -3,6 +3,7 @@
 
     <string name="app_name">妙啊</string>
 	
+	<string name="loading">正在加载&#8230;</string>
 	<!--Toast-->
 	<string name="toast_successful">成功</string>
 	<string name="toast_failed">失败</string>
@@ -28,7 +29,6 @@
 	<string name="dialog_longpress_save_img">保存到相册</string>
 	<string name="dialog_longpress_find_img">搜索此图片</string>
 	<string name="dialog_longpress_new_tab">新页面打开</string>
-	<string name="dialog_longpress_new_tab_in_background">新标签页在后台打开</string>
 	
 	<!-- Browser setting -->
     <string name="setting_title_browser">浏览设置</string>
@@ -45,6 +45,34 @@
     <string name="setting_summary_user_agent_desktop">桌面</string>
 	
 	<string name="setting_title_browse_cache">删除浏览缓存</string>
+	
+	<string name="action_new_tab">新建标签</string>
+    <string name="action_share">分享页面</string>
+    <string name="action_history">历史记录</string>
+    <string name="action_bookmarks">书签列表</string>
+    <string name="action_add_bookmark">添加书签</string>
+    <string name="action_copy">复制链接</string>
+    <string name="action_forward">前进</string>
+    <string name="settings">浏览器设置</string>
+	<string name="action_find">页内搜索</string>
+	<string name="action_incognito">新建隐身标签</string>
+    <string name="action_homepage">默认页面</string>
+    <string name="action_back">返回</string>
+    <string name="action_find">页内搜索</string>
+	<string name="action_add_to_homescreen">添加到主屏</string>
+	<string name="action_downloads">下载</string>
+    <string name="reading_mode">阅读模式</string>
+	
+	<string name="action_save_pdf">保存网页为pdf</string>
+	<string name="action_save_pic">截取网页</string>
+	<string name="action_save_html">保存网页为html</string>
+	<string name="action_save_mth">保存网页为mth</string>
+	
+	<string name="action_source_page">查看网页源码</string>
+	<string name="action_translation_page">翻译网页</string>
+	<string name="action_resource_links">资源链接</string>
+	<string name="action_developer_mode">开发者模式</string>
+	
 </resources>
 
 

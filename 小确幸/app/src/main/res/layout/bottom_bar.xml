@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/bottom_bar_layout"
+	android:layout_height="48dp"
+	android:layout_width="match_parent">
+
+	<LinearLayout
+		style="?android:attr/buttonBarStyle"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:gravity="center">
+
+		<ImageButton
+			android:id="@+id/bottom_back"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:src="@drawable/ic_action_back"
+			android:background="?attr/selectableItemBackground"/>
+
+		<ImageButton
+			android:id="@+id/bottom_forward"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:src="@drawable/ic_action_forward"
+			android:background="?attr/selectableItemBackground"/>
+
+		<ImageButton
+			android:id="@+id/bottom_home"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:src="@drawable/ic_action_home"
+			android:background="?attr/selectableItemBackground"/>
+
+		<ImageButton
+			android:id="@+id/bottom_multi"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:src="@drawable/ic_action_desktop"
+			android:background="?attr/selectableItemBackground"/>
+
+		<ImageButton
+			android:id="@+id/bottom_menu"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:src="@drawable/ic_action_tabs"
+			android:background="?attr/selectableItemBackground"/>
+
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="0.5dp"
+		android:background="?android:attr/dividerVertical"/>
+
+</RelativeLayout>
+

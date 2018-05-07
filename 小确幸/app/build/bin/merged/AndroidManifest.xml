@@ -21,12 +21,13 @@
         android:value="25.3.1" />
 
     <application
+        android:name="small.indeed.fortunate.BrowserApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="small.indeed.fortunate.Activity.BrowserActivity"
+            android:name="small.indeed.fortunate.ui.activities.BrowserActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
             android:hardwareAccelerated="true"
             android:label="@string/app_name"
@@ -70,12 +71,15 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name="small.indeed.fortunate.Activity.DownloadActivity" />
-        <activity android:name="small.indeed.fortunate.Activity.MarkHistoryActivity" />
         <activity
-            android:name="small.indeed.fortunate.Activity.SettingActivity"
-            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize"
-            android:label="@string/app_name" />
+            android:name="small.indeed.fortunate.ui.activities.Crash"
+            android:process=":Crash" />
+        <activity android:name="small.indeed.fortunate.ui.activities.DownloadActivity" />
+        <activity android:name="small.indeed.fortunate.ui.activities.BookmarkActivity" />
+        <activity android:name="small.indeed.fortunate.ui.activities.CHESHI" />
+        <activity
+            android:name="small.indeed.fortunate.ui.activities.SettingActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|screenSize|smallestScreenSize" />
     </application>
 
 </manifest>

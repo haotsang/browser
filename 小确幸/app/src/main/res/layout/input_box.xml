@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent">
+
+	<LinearLayout
+		android:layout_height="?attr/actionBarSize"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+		<TextView
+			android:id="@+id/box_url"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1.0"
+			android:singleLine="true"
+			android:textColor="@android:color/black"
+			android:textSize="14sp"
+			android:layout_marginLeft="6dp"
+			android:layout_marginRight="6dp"
+			android:gravity="center_vertical"/>
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_height="?attr/actionBarSize"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+		<AutoCompleteTextView
+			android:id="@+id/main_omnibox_inputbox"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:hint="输入内容"
+			android:completionHint="最近的5条记录"
+			android:textSize="14sp"
+			android:selectAllOnFocus="true"
+			android:completionThreshold="1"
+			android:singleLine="true"
+			android:imeOptions="actionGo"
+			android:textCursorDrawable="@null"
+			android:inputType="textNoSuggestions|textWebEditText"
+			android:background="@null"
+			android:popupBackground="@null"
+			android:layout_weight="1.0"/>
+		
+		
+	</LinearLayout>
+</FrameLayout>
+

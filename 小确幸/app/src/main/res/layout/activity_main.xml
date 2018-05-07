@@ -1,135 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/main_framelayout"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 	<LinearLayout
+		android:id="@+id/ui_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
-
+		<include layout="@layout/top_bar"/>
 		<FrameLayout
-			android:id="@+id/main_content"
-			android:layout_height="match_parent"
+			android:id="@+id/content_frame"
 			android:layout_width="match_parent"
-			android:layout_weight="1.0"/>
-
-		<RelativeLayout
-			android:id="@+id/main_omnibox"
-			android:layout_height="52dp"
-			android:layout_width="match_parent">
-
-			<LinearLayout
-				android:layout_height="match_parent"
-				android:layout_width="match_parent">
-
-				<LinearLayout
-					android:layout_height="match_parent"
-					android:layout_width="match_parent"
-					android:layout_weight="1.0"
-					android:layout_marginRight="10dp"
-					android:layout_marginLeft="10dp"
-					android:background="@drawable/background"
-					android:layout_marginBottom="4dp"
-					android:layout_marginTop="4dp">
-
-					<ImageButton
-						android:id="@+id/main_omnibox_safe"
-						android:layout_height="match_parent"
-						android:layout_width="wrap_content"
-						android:src="@drawable/pageinfo_good"
-						android:background="?android:attr/selectableItemBackgroundBorderless"
-						android:layout_marginLeft="6dp"/>
-
-					<TextView
-						android:id="@+id/main_omnibox_url"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:layout_weight="1.0"
-						android:singleLine="true"
-						android:textColor="@android:color/black"
-						android:textSize="14sp"
-						android:layout_marginLeft="6dp"
-						android:layout_marginRight="6dp"
-						android:gravity="center_vertical"/>
-
-					<ImageButton
-						android:id="@+id/main_omnibox_reload"
-						android:layout_height="match_parent"
-						android:layout_width="wrap_content"
-						android:src="@drawable/ic_reload"
-						android:background="?android:attr/selectableItemBackgroundBorderless"
-						android:layout_marginRight="6dp"/>
-
-				</LinearLayout>
-
-				<FrameLayout
-					android:layout_height="match_parent"
-					android:layout_width="wrap_content"
-					android:layout_marginRight="6dp"
-					android:layout_marginLeft="6dp">
-
-					<ImageButton
-						android:id="@+id/main_omnibox_tabswitcher"
-						android:layout_height="match_parent"
-						android:layout_width="wrap_content"
-						android:src="@drawable/ic_tabswitcher"
-						android:background="?android:attr/selectableItemBackgroundBorderless"
-						android:alpha="0.6"/>
-
-					<TextView
-						android:layout_height="match_parent"
-						android:layout_width="match_parent"
-						android:text="1"
-						android:textColor="#ff000000"
-						android:gravity="center"
-						android:alpha="0.6"
-						android:textSize="12sp"
-						android:textStyle="bold"/>
-
-				</FrameLayout>
-
-				<ImageButton
-					android:id="@+id/main_omnibox_overflow"
-					android:layout_height="match_parent"
-					android:layout_width="wrap_content"
-					android:src="@drawable/ic_menu"
-					android:background="?android:attr/selectableItemBackgroundBorderless"
-					android:layout_marginRight="12dp"
-					android:layout_marginLeft="6dp"/>
-
-			</LinearLayout>
-
-			<View
-				android:background="?android:attr/dividerVertical"
-				android:layout_height="1dp"
-				android:layout_width="match_parent"/>
-
-			<ProgressBar
-				android:id="@+id/main_progress_bar"
-				android:layout_height="2.5dp"
-				android:layout_width="match_parent"
-				android:indeterminate="false"
-				android:indeterminateOnly="false"
-				android:progressDrawable="@drawable/progress_bar_layer_list"
-				style="?android:attr/progressBarStyleHorizontal"
-				android:visibility="gone"/>
-
-		</RelativeLayout>
-
-		
-		<small.indeed.fortunate.View.FinderBar
-			android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:clipChildren="true"/>
+		<include layout="@layout/bottom_bar"/>
+		<small.indeed.fortunate.view.FinderBar
 			android:id="@+id/finder_bar"
-			android:visibility="gone"
 			android:layout_width="match_parent"
-			android:layout_height="52dp" />
-		
-		
+			android:layout_height="52dp"
+			android:visibility="gone"/>
 	</LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>
-

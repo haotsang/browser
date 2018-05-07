@@ -5,20 +5,20 @@
 		<SwitchPreference
 			android:key="@string/sp_no_ad"
 			android:defaultValue="true"
-			android:icon="@drawable/browse_ic_no_ad"
+			android:icon="@drawable/ic_no_ad"
 			android:title="@string/setting_title_no_ad"
 			android:summary="@string/setting_summary_no_ad"/>
 		<ListPreference
 			android:key="@string/sp_search_engine"
 			android:defaultValue="0"
-			android:icon="@drawable/browse_ic_search_engine"
+			android:icon="@drawable/ic_search_engine"
 			android:title="@string/setting_title_search_engine"
 			android:summary="@string/setting_summary_search_engine_bing"
 			android:entries="@array/setting_entries_search_engine"
 			android:entryValues="@array/setting_values_search_engine"/>
 		<Preference
 			android:key="@string/sp_browse_cache"
-			android:icon="@drawable/browse_ic_clear"
+			android:icon="@drawable/ic_clear_cache"
 			android:title="@string/setting_title_browse_cache"/>
     </PreferenceCategory>
 	
